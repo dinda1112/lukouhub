@@ -157,6 +157,7 @@
       font-size: 14px;
       cursor: pointer;
       transition: color 0.3s ease;
+      font-weight: 600;
     }
 
     .clear-cart:hover {
@@ -170,6 +171,10 @@
       padding: 20px 0;
       border-bottom: 1px solid #f0f0f0;
       align-items: center;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
     }
 
     .item-image {
@@ -217,6 +222,7 @@
       border: 2px solid #e0e0e0;
       border-radius: 50px;
       overflow: hidden;
+      background: white;
     }
 
     .quantity-btn {
@@ -224,15 +230,20 @@
       border: none;
       width: 35px;
       height: 35px;
-      font-size: 16px;
+      font-size: 18px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
       color: #2c1810;
+      font-weight: bold;
     }
 
     .quantity-btn:hover {
       background: #f4a460;
       color: white;
+    }
+
+    .quantity-btn:active {
+      transform: scale(0.95);
     }
 
     .quantity-input {
@@ -242,6 +253,7 @@
       font-size: 16px;
       font-weight: bold;
       color: #2c1810;
+      background: transparent;
     }
 
     .item-total {
@@ -255,10 +267,12 @@
       font-size: 13px;
       cursor: pointer;
       transition: color 0.3s ease;
+      font-weight: 600;
     }
 
     .remove-item:hover {
       color: #c02030;
+      text-decoration: underline;
     }
 
     .empty-cart {
@@ -269,6 +283,12 @@
     .empty-cart-icon {
       font-size: 80px;
       margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
     .empty-cart h3 {
@@ -375,6 +395,17 @@
       color: white;
     }
 
+    .promo-success {
+      background: #d4edda;
+      color: #155724;
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 10px;
+      font-size: 13px;
+      text-align: center;
+      display: none;
+    }
+
     .btn-checkout {
       width: 100%;
       background: linear-gradient(135deg, #2c1810, #4a2c2a);
@@ -393,6 +424,12 @@
       background: linear-gradient(135deg, #1a0f0a, #2c1810);
       transform: translateY(-3px);
       box-shadow: 0 10px 30px rgba(44,24,16,0.4);
+    }
+
+    .btn-checkout:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .continue-shopping {
@@ -481,6 +518,32 @@
       font-size: 14px;
     }
 
+    /* NOTIFICATION */
+    .notification {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      background: #3cb371;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      z-index: 2000;
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
     /* RESPONSIVE */
     @media (max-width: 992px) {
       .cart-container {
@@ -503,6 +566,7 @@
         grid-column: 1 / -1;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
         margin-top: 10px;
       }
       .item-image {
@@ -517,10 +581,16 @@
         grid-template-columns: 1fr;
         text-align: center;
       }
+      .page-header h1 {
+        font-size: 32px;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- NOTIFICATION -->
+  <div class="notification" id="notification"></div>
 
   <!-- NAVIGATION -->
   <nav class="navbar">
@@ -552,8 +622,8 @@
       <!-- CART ITEMS -->
       <div class="cart-items">
         <div class="cart-header">
-          <h2>Cart Items</h2>
-          <span class="clear-cart" onclick="clearCart()">Clear All</span>
+          <h2>Cart Items (<span id="item-count">0</span>)</h2>
+          <span class="clear-cart" onclick="clearCart()">🗑️ Clear All</span>
         </div>
         <div id="cart-items-container">
           <!-- Cart items will be inserted here by JavaScript -->
@@ -581,11 +651,12 @@
         </div>
 
         <div class="promo-code">
-          <input type="text" placeholder="Enter promo code" id="promo-input">
+          <input type="text" placeholder="Enter promo code (LUKOU10, WELCOME, FIRSTORDER)" id="promo-input">
           <button class="btn-apply" onclick="applyPromo()">Apply Code</button>
+          <div class="promo-success" id="promo-success">✓ Promo code applied!</div>
         </div>
 
-        <button class="btn-checkout" onclick="proceedToCheckout()">
+        <button class="btn-checkout" id="checkout-btn" onclick="proceedToCheckout()">
           Proceed to Checkout 🎉
         </button>
 
@@ -641,10 +712,25 @@
   </footer>
 
   <script>
+    // Show notification
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.style.background = type === 'success' ? '#3cb371' : '#e63946';
+      notification.style.display = 'block';
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+
     // Load and display cart
     function loadCart() {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
       const container = document.getElementById('cart-items-container');
+      
+      // Update item count
+      document.getElementById('item-count').textContent = cart.length;
       
       if (cart.length === 0) {
         container.innerHTML = `
@@ -655,23 +741,25 @@
             <a href="listing.html" class="btn-shop">Browse Menu</a>
           </div>
         `;
+        document.getElementById('checkout-btn').disabled = true;
       } else {
+        document.getElementById('checkout-btn').disabled = false;
         container.innerHTML = cart.map((item, index) => `
           <div class="cart-item">
-            <div class="item-image">${item.image || '🍩'}</div>
+            <div class="item-image" style="background: linear-gradient(135deg, ${getGradientColors(index)})">${item.image || '🍩'}</div>
             <div class="item-details">
-              <div class="item-category">Solo Delight</div>
+              <div class="item-category">${item.category || 'Solo Delight'}</div>
               <h3>${item.name}</h3>
               <div class="item-price">RM ${item.price.toFixed(2)} each</div>
             </div>
             <div class="item-actions">
               <div class="quantity-controls">
-                <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">−</button>
+                <button class="quantity-btn" onclick="updateQuantity(${index}, -1)" title="Decrease quantity">−</button>
                 <input type="number" class="quantity-input" value="${item.quantity}" readonly>
-                <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                <button class="quantity-btn" onclick="updateQuantity(${index}, 1)" title="Increase quantity">+</button>
               </div>
               <div class="item-total">RM ${(item.price * item.quantity).toFixed(2)}</div>
-              <span class="remove-item" onclick="removeItem(${index})">🗑️ Remove</span>
+              <span class="remove-item" onclick="removeItem(${index})" title="Remove item">🗑️ Remove</span>
             </div>
           </div>
         `).join('');
@@ -680,84 +768,175 @@
       updateSummary();
     }
 
-    // Update quantity
+    // Get gradient colors for variety
+    function getGradientColors(index) {
+      const gradients = [
+        '#8b4513, #d2691e',
+        '#90ee90, #ffb6c1',
+        '#deb887, #8b4513',
+        '#ff69b4, #ffb6c1',
+        '#87ceeb, #4169e1',
+        '#ffd700, #ffed4e'
+      ];
+      return gradients[index % gradients.length];
+    }
+
+    // Update quantity (ADD/REMOVE items)
     function updateQuantity(index, change) {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      
+      if (!cart[index]) return;
+      
       cart[index].quantity += change;
       
+      // Don't allow quantity to go below 1
       if (cart[index].quantity < 1) {
         cart[index].quantity = 1;
+        showNotification('Minimum quantity is 1', 'error');
+        return;
+      }
+      
+      // Max quantity limit
+      if (cart[index].quantity > 99) {
+        cart[index].quantity = 99;
+        showNotification('Maximum quantity is 99', 'error');
+        return;
       }
       
       localStorage.setItem('cart', JSON.stringify(cart));
       loadCart();
+      
+      if (change > 0) {
+        showNotification(`Added 1 more ${cart[index].name}`, 'success');
+      } else {
+        showNotification(`Removed 1 ${cart[index].name}`, 'success');
+      }
     }
 
-    // Remove item
+    // Remove item from cart
     function removeItem(index) {
-      if (confirm('Remove this item from cart?')) {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const itemName = cart[index]?.name || 'item';
+      
+      if (confirm(`Remove ${itemName} from cart?`)) {
         cart.splice(index, 1);
         localStorage.setItem('cart', JSON.stringify(cart));
         loadCart();
+        showNotification(`${itemName} removed from cart`, 'success');
       }
     }
 
-    // Clear cart
+    // Clear entire cart
     function clearCart() {
-      if (confirm('Clear all items from cart?')) {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      
+      if (cart.length === 0) {
+        showNotification('Cart is already empty', 'error');
+        return;
+      }
+      
+      if (confirm('Clear all items from cart? This cannot be undone.')) {
         localStorage.setItem('cart', '[]');
+        localStorage.removeItem('discount');
+        document.getElementById('promo-input').value = '';
+        document.getElementById('promo-success').style.display = 'none';
         loadCart();
+        showNotification('Cart cleared successfully', 'success');
       }
     }
 
-    // Update summary
+    // Update order summary
     function updateSummary() {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
       const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       const delivery = cart.length > 0 ? 5.00 : 0;
       const discount = parseFloat(localStorage.getItem('discount') || '0');
-      const total = subtotal + delivery - discount;
+      const total = Math.max(0, subtotal + delivery - discount);
 
       document.getElementById('subtotal').textContent = `RM ${subtotal.toFixed(2)}`;
       document.getElementById('delivery').textContent = `RM ${delivery.toFixed(2)}`;
       document.getElementById('discount').textContent = `- RM ${discount.toFixed(2)}`;
       document.getElementById('total').textContent = `RM ${total.toFixed(2)}`;
 
+      // Update cart count in navbar
       const count = cart.reduce((sum, item) => sum + item.quantity, 0);
       document.querySelector('.cart-count').textContent = count;
     }
 
     // Apply promo code
     function applyPromo() {
-      const code = document.getElementById('promo-input').value.toUpperCase();
+      const code = document.getElementById('promo-input').value.trim().toUpperCase();
+      
+      if (!code) {
+        showNotification('Please enter a promo code', 'error');
+        return;
+      }
+      
       const promoCodes = {
         'LUKOU10': 10,
         'WELCOME': 5,
-        'FIRSTORDER': 15
+        'FIRSTORDER': 15,
+        'NEWUSER': 8,
+        'SAVE20': 20
       };
 
       if (promoCodes[code]) {
-        localStorage.setItem('discount', promoCodes[code]);
-        alert(`Promo code applied! You saved RM ${promoCodes[code]}`);
+        const discount = promoCodes[code];
+        localStorage.setItem('discount', discount);
+        localStorage.setItem('promoCode', code);
+        document.getElementById('promo-success').style.display = 'block';
+        showNotification(`✓ Promo code applied! You saved RM ${discount.toFixed(2)}`, 'success');
         updateSummary();
       } else {
-        alert('Invalid promo code');
+        showNotification('Invalid promo code. Try: LUKOU10, WELCOME, or FIRSTORDER', 'error');
+        document.getElementById('promo-success').style.display = 'none';
       }
     }
 
     // Proceed to checkout
     function proceedToCheckout() {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      
       if (cart.length === 0) {
-        alert('Your cart is empty!');
+        showNotification('Your cart is empty! Add items first.', 'error');
         return;
       }
+      
+      // Save cart state before checkout
+      localStorage.setItem('checkoutCart', JSON.stringify(cart));
+      
+      // Redirect to checkout
       window.location.href = 'checkout.html';
     }
 
-    // Initialize
-    loadCart();
+    // Check for applied promo code on load
+    function checkPromoCode() {
+      const discount = localStorage.getItem('discount');
+      const promoCode = localStorage.getItem('promoCode');
+      
+      if (discount && promoCode) {
+        document.getElementById('promo-input').value = promoCode;
+        document.getElementById('promo-success').style.display = 'block';
+      }
+    }
+
+    // Initialize cart on page load
+    window.addEventListener('DOMContentLoaded', function() {
+      loadCart();
+      checkPromoCode();
+    });
+
+    // Allow Enter key for promo code
+    document.addEventListener('DOMContentLoaded', function() {
+      const promoInput = document.getElementById('promo-input');
+      if (promoInput) {
+        promoInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            applyPromo();
+          }
+        });
+      }
+    });
   </script>
 
 </body>
