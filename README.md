@@ -88,7 +88,7 @@ This project is developed by:
 
 This project is created for educational purposes as part of a university group project.
 
-© 2024 LukouHub. All rights reserved.
+© 2025 LukouHub. All rights reserved.
 
 ## Contact
 
@@ -102,7 +102,6 @@ For questions or suggestions about this project, please contact:
 
 - Thanks to our instructors for guidance
 - Inspired by Lukouhub
-- Built with ❤️ in Kuching, Sarawak
 
 ---
 

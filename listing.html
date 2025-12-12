@@ -4,9 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menu - LukouHub</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="assets/styles/main.css">
+  <link rel="stylesheet" href="assets/styles/product-modal.css">
 </head>
 <body>
+
+  <!-- NOTIFICATION -->
+  <div class="notification" id="notification"></div>
 
   <!-- NAVIGATION -->
   <nav class="navbar">
@@ -52,7 +56,7 @@
   <section class="products-section">
     <div class="products-grid">
       <!-- Product 1 -->
-      <a href="product-detail.html?id=1" class="product-card">
+      <div class="product-card" data-product-id="1">
         <div class="product-image" style="background: linear-gradient(135deg, #8b4513, #d2691e);">
           <span class="product-badge">BESTSELLER</span>
           🍫🍌
@@ -63,13 +67,13 @@
           <p class="description">Rich Nutella filling with fresh banana slices</p>
           <div class="product-price">
             <span class="price">RM 8.90</span>
-            <button class="add-cart" onclick="event.preventDefault();">+</button>
+            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(1)">+</button>
           </div>
         </div>
-      </a>
+      </div>
 
       <!-- Product 2 -->
-      <a href="product-detail.html?id=2" class="product-card">
+      <div class="product-card" data-product-id="2">
         <div class="product-image" style="background: linear-gradient(135deg, #90ee90, #ffb6c1);">
           <span class="product-badge new">NEW</span>
           🍵🍓
@@ -80,13 +84,13 @@
           <p class="description">Premium matcha cream with mixed berries</p>
           <div class="product-price">
             <span class="price">RM 9.90</span>
-            <button class="add-cart" onclick="event.preventDefault();">+</button>
+            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(2)">+</button>
           </div>
         </div>
-      </a>
+      </div>
 
       <!-- Product 3 -->
-      <a href="product-detail.html?id=3" class="product-card">
+      <div class="product-card" data-product-id="3">
         <div class="product-image" style="background: linear-gradient(135deg, #deb887, #8b4513);">
           🍪
         </div>
@@ -96,13 +100,13 @@
           <p class="description">Cookies & cream heaven in every bite</p>
           <div class="product-price">
             <span class="price">RM 8.90</span>
-            <button class="add-cart" onclick="event.preventDefault();">+</button>
+            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(3)">+</button>
           </div>
         </div>
-      </a>
+      </div>
 
       <!-- Product 4 -->
-      <a href="product-detail.html?id=4" class="product-card">
+      <div class="product-card" data-product-id="4">
         <div class="product-image" style="background: linear-gradient(135deg, #ff69b4, #ffb6c1);">
           <span class="product-badge popular">POPULAR</span>
           🍓
@@ -113,13 +117,13 @@
           <p class="description">Two donuts with fresh strawberry cream</p>
           <div class="product-price">
             <span class="price">RM 15.90</span>
-            <button class="add-cart" onclick="event.preventDefault();">+</button>
+            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(4)">+</button>
           </div>
         </div>
-      </a>
+      </div>
 
       <!-- Product 5 -->
-      <a href="product-detail.html?id=5" class="product-card">
+      <div class="product-card" data-product-id="5">
         <div class="product-image" style="background: linear-gradient(135deg, #87ceeb, #4169e1);">
           🫐🍋
         </div>
@@ -129,13 +133,13 @@
           <p class="description">Perfect balance of sweet and tangy</p>
           <div class="product-price">
             <span class="price">RM 16.90</span>
-            <button class="add-cart" onclick="event.preventDefault();">+</button>
+            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(5)">+</button>
           </div>
         </div>
-      </a>
+      </div>
 
       <!-- Product 6 -->
-      <a href="product-detail.html?id=6" class="product-card">
+      <div class="product-card" data-product-id="6">
         <div class="product-image" style="background: linear-gradient(135deg, #ffd700, #ffed4e);">
           🥭🥥
         </div>
@@ -145,13 +149,13 @@
           <p class="description">6 donuts with mango & coconut flavors</p>
           <div class="product-price">
             <span class="price">RM 35.90</span>
-            <button class="add-cart" onclick="event.preventDefault();">+</button>
+            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(6)">+</button>
           </div>
         </div>
-      </a>
+      </div>
 
       <!-- Product 7 -->
-      <a href="product-detail.html?id=7" class="product-card">
+      <div class="product-card" data-product-id="7">
         <div class="product-image" style="background: linear-gradient(135deg, #8b4513, #a0522d);">
           ☕🍫
         </div>
@@ -161,13 +165,13 @@
           <p class="description">8 coffee and chocolate filled donuts</p>
           <div class="product-price">
             <span class="price">RM 42.90</span>
-            <button class="add-cart" onclick="event.preventDefault();">+</button>
+            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(7)">+</button>
           </div>
         </div>
-      </a>
+      </div>
 
       <!-- Product 8 -->
-      <a href="product-detail.html?id=8" class="product-card">
+      <div class="product-card" data-product-id="8">
         <div class="product-image" style="background: linear-gradient(135deg, #ff6347, #ff4500);">
           <span class="product-badge new">NEW</span>
           🌶️🍫
@@ -178,13 +182,13 @@
           <p class="description">Dark chocolate with a hint of chili</p>
           <div class="product-price">
             <span class="price">RM 9.90</span>
-            <button class="add-cart" onclick="event.preventDefault();">+</button>
+            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(8)">+</button>
           </div>
         </div>
-      </a>
+      </div>
 
       <!-- Product 9 -->
-      <a href="product-detail.html?id=9" class="product-card">
+      <div class="product-card" data-product-id="9">
         <div class="product-image" style="background: linear-gradient(135deg, #ffa500, #ff8c00);">
           <span class="product-badge">BESTSELLER</span>
           🎉
@@ -195,10 +199,10 @@
           <p class="description">20 assorted donuts for your celebration</p>
           <div class="product-price">
             <span class="price">RM 89.90</span>
-            <button class="add-cart" onclick="event.preventDefault();">+</button>
+            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(9)">+</button>
           </div>
         </div>
-      </a>
+      </div>
     </div>
   </section>
 
@@ -242,7 +246,60 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- PRODUCT DETAIL MODAL -->
+  <div class="product-modal" id="product-modal">
+    <div class="modal-overlay" onclick="closeProductModal()"></div>
+    <div class="modal-content">
+      <!-- Close Button -->
+      <button class="modal-close" onclick="closeProductModal()">✕</button>
+      
+      <div class="modal-body">
+        <!-- Product Image -->
+        <div class="modal-image-section">
+          <div class="modal-product-image" id="modal-product-image">🍩</div>
+          <div class="modal-badges" id="modal-badges"></div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="modal-info-section">
+          <div class="modal-header">
+            <div>
+              <div class="modal-category" id="modal-category">Solo Delight</div>
+              <h2 id="modal-product-name">Nutella Banana</h2>
+              <div class="modal-rating">
+                <span class="modal-liked">#2 Most liked</span>
+                <span class="modal-thumbs">👍 85% (7)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-calories" id="modal-calories">250 cal</div>
+
+          <div class="modal-description" id="modal-description">
+            Deliciously tasty and perfectly crispy.
+          </div>
+
+          <!-- Quantity Selector -->
+          <div class="modal-quantity-section">
+            <label>Quantity</label>
+            <div class="modal-quantity-controls">
+              <button class="modal-qty-btn" onclick="modalDecreaseQuantity()">−</button>
+              <input type="number" id="modal-quantity" value="1" readonly>
+              <button class="modal-qty-btn" onclick="modalIncreaseQuantity()">+</button>
+            </div>
+          </div>
+
+          <!-- Add to Cart Button -->
+          <button class="modal-add-cart-btn" id="modal-add-cart-btn" onclick="modalAddToCart()">
+            Add to cart - <span id="modal-total-price">RM 8.90</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/scripts/main.js"></script>
+  <script src="assets/scripts/product-modal.js"></script>
 
 </body>
 </html>
