@@ -44,6 +44,34 @@ const products = [
     rating: "88% (9)"
   },
   {
+    id: 8,
+    name: "Spicy Chocolate",
+    price: 9.90,
+    category: "Solo Delight",
+    description: "For the adventurous! Our Spicy Chocolate donut combines dark chocolate with a subtle hint of chili, creating an exciting flavor journey.",
+    image: "🌶️🍫",
+    badge: "NEW",
+    badgeClass: "new",
+    gradient: "linear-gradient(135deg, #ff6347, #ff4500)",
+    calories: 290,
+    liked: "#9 Most liked",
+    rating: "78% (6)"
+  },
+  {
+    id: 10,
+    name: "Classic Vanilla Dream",
+    price: 7.90,
+    category: "Solo Delight",
+    description: "Sometimes simple is best. Our Classic Vanilla Dream features premium Madagascar vanilla cream in a perfectly fluffy donut.",
+    image: "🤍",
+    gradient: "linear-gradient(135deg, #fff5ee, #ffe4b5)",
+    calories: 240,
+    liked: "#10 Most liked",
+    rating: "87% (14)"
+  },
+  
+  // COUPLE SET (2 items)
+  {
     id: 4,
     name: "Strawberry Bliss Duo",
     price: 15.90,
@@ -69,6 +97,8 @@ const products = [
     liked: "#7 Most liked",
     rating: "86% (11)"
   },
+  
+  // FAMILY PACK (2 items)
   {
     id: 6,
     name: "Tropical Family Box",
@@ -93,20 +123,8 @@ const products = [
     liked: "#8 Most liked",
     rating: "84% (10)"
   },
-  {
-    id: 8,
-    name: "Spicy Chocolate",
-    price: 9.90,
-    category: "Solo Delight",
-    description: "For the adventurous! Our Spicy Chocolate donut combines dark chocolate with a subtle hint of chili, creating an exciting flavor journey.",
-    image: "🌶️🍫",
-    badge: "NEW",
-    badgeClass: "new",
-    gradient: "linear-gradient(135deg, #ff6347, #ff4500)",
-    calories: 290,
-    liked: "#9 Most liked",
-    rating: "78% (6)"
-  },
+  
+  // PARTY BOX (3 items) - ADDED 2 MORE!
   {
     id: 9,
     name: "Ultimate Party Box",
@@ -121,16 +139,30 @@ const products = [
     rating: "93% (25)"
   },
   {
-    id: 10,
-    name: "Classic Vanilla Dream",
-    price: 7.90,
-    category: "Solo Delight",
-    description: "Sometimes simple is best. Our Classic Vanilla Dream features premium Madagascar vanilla cream in a perfectly fluffy donut.",
-    image: "🤍",
-    gradient: "linear-gradient(135deg, #fff5ee, #ffe4b5)",
-    calories: 240,
-    liked: "#10 Most liked",
-    rating: "87% (14)"
+    id: 11,
+    name: "Birthday Celebration Box",
+    price: 79.90,
+    category: "Party Box",
+    description: "Perfect for birthday parties! 18 colorful donuts with rainbow sprinkles, chocolate drizzle, and vanilla glaze. Guaranteed to bring smiles!",
+    image: "🎂🎈",
+    badge: "POPULAR",
+    badgeClass: "popular",
+    gradient: "linear-gradient(135deg, #ff1493, #ff69b4)",
+    calories: 300,
+    liked: "#11 Most liked",
+    rating: "91% (20)"
+  },
+  {
+    id: 12,
+    name: "Office Meeting Box",
+    price: 69.90,
+    category: "Party Box",
+    description: "Ideal for office meetings and events! 15 assorted donuts including classic glazed, chocolate, and specialty flavors. Perfect for sharing!",
+    image: "💼☕",
+    gradient: "linear-gradient(135deg, #4169e1, #6495ed)",
+    calories: 270,
+    liked: "#12 Most liked",
+    rating: "89% (16)"
   }
 ];
 
@@ -334,6 +366,49 @@ function modalAddToCart() {
   closeProductModal();
 }
 
+// CATEGORY FILTER FUNCTIONALITY
+function filterProducts(category) {
+  const productCards = document.querySelectorAll('.product-card');
+  
+  productCards.forEach(card => {
+    const productId = parseInt(card.getAttribute('data-product-id'));
+    const product = products.find(p => p.id === productId);
+    
+    if (!product) return;
+    
+    if (category === 'all') {
+      card.style.display = 'block';
+    } else {
+      // Match category (case-insensitive, partial match)
+      const productCategory = product.category.toLowerCase();
+      if (productCategory.includes(category.toLowerCase())) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    }
+  });
+}
+
+// Initialize filter buttons
+function initializeFilterButtons() {
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      // Remove active class from all buttons
+      filterButtons.forEach(b => b.classList.remove('active'));
+      
+      // Add active class to clicked button
+      this.classList.add('active');
+      
+      // Get category and filter
+      const category = this.getAttribute('data-category');
+      filterProducts(category);
+    });
+  });
+}
+
 // Close modal when clicking outside or pressing Escape
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
@@ -341,12 +416,15 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Initialize modal on page load
+// Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Product modal script loaded');
   
   // Update cart count on load
   updateCartCount();
+  
+  // Initialize filter buttons
+  initializeFilterButtons();
   
   // Add click event listeners to product cards
   const productCards = document.querySelectorAll('.product-card');
@@ -368,7 +446,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    // Also make card cursor pointer
+    // Make card cursor pointer
     card.style.cursor = 'pointer';
   });
 });
