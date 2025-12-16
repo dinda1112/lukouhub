@@ -181,7 +181,6 @@ function editProduct(productId) {
   document.getElementById('product-calories').value = product.calories || '';
   document.getElementById('product-badge').value = product.badge || '';
   document.getElementById('product-description').value = product.description;
-  document.getElementById('product-gradient').value = product.gradient || '';
   
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -206,8 +205,8 @@ function saveProduct(event) {
     badge: document.getElementById('product-badge').value,
     badgeClass: getBadgeClass(document.getElementById('product-badge').value),
     description: document.getElementById('product-description').value,
-    gradient: document.getElementById('product-gradient').value || 'linear-gradient(135deg, #f4a460, #e08040)',
-    liked: '#' + products.length + ' Most liked',
+    gradient: 'linear-gradient(135deg, #f4a460, #e08040)', // Default gradient
+    liked: '#' + (nextId) + ' Most liked',
     rating: '90% (10)'
   };
   
