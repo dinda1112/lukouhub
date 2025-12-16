@@ -41,11 +41,11 @@
   <section class="filters">
     <div class="filters-container">
       <div class="filter-group">
-        <button class="filter-btn active" data-category="all">All (12)</button>
-        <button class="filter-btn" data-category="solo">Solo (5)</button>
-        <button class="filter-btn" data-category="couple">Couple (2)</button>
-        <button class="filter-btn" data-category="family">Family (2)</button>
-        <button class="filter-btn" data-category="party">Party (3)</button>
+        <button class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="solo">Solo</button>
+        <button class="filter-btn" data-category="couple">Couple</button>
+        <button class="filter-btn" data-category="family">Family</button>
+        <button class="filter-btn" data-category="party">Party</button>
       </div>
       <div class="search-box">
         <input type="text" placeholder="🔍 Search for donuts...">
@@ -55,213 +55,11 @@
 
   <!-- PRODUCTS -->
   <section class="products-section">
-    <div class="products-grid">
-      <!-- SOLO DELIGHT PRODUCTS (5) -->
-      
-      <!-- Product 1 -->
-      <div class="product-card" data-product-id="1">
-        <div class="product-image" style="background: linear-gradient(135deg, #8b4513, #d2691e);">
-          <span class="product-badge">BESTSELLER</span>
-          🍫🍌
-        </div>
-        <div class="product-info">
-          <div class="product-category">Solo Delight</div>
-          <h3>Nutella Banana</h3>
-          <p class="description">Rich Nutella filling with fresh banana slices</p>
-          <div class="product-price">
-            <span class="price">RM 8.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(1)">+</button>
-          </div>
-        </div>
+    <div class="products-grid" id="products-grid">
+      <!-- Products will be loaded here dynamically from Firebase -->
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+        <p style="color: #999;">Loading products...</p>
       </div>
-
-      <!-- Product 2 -->
-      <div class="product-card" data-product-id="2">
-        <div class="product-image" style="background: linear-gradient(135deg, #90ee90, #ffb6c1);">
-          <span class="product-badge new">NEW</span>
-          🍵🍓
-        </div>
-        <div class="product-info">
-          <div class="product-category">Solo Delight</div>
-          <h3>Berry Matcha</h3>
-          <p class="description">Premium matcha cream with mixed berries</p>
-          <div class="product-price">
-            <span class="price">RM 9.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(2)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 3 -->
-      <div class="product-card" data-product-id="3">
-        <div class="product-image" style="background: linear-gradient(135deg, #deb887, #8b4513);">
-          🍪
-        </div>
-        <div class="product-info">
-          <div class="product-category">Solo Delight</div>
-          <h3>Cookie O'Clock</h3>
-          <p class="description">Cookies & cream heaven in every bite</p>
-          <div class="product-price">
-            <span class="price">RM 8.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(3)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 8 -->
-      <div class="product-card" data-product-id="8">
-        <div class="product-image" style="background: linear-gradient(135deg, #ff6347, #ff4500);">
-          <span class="product-badge new">NEW</span>
-          🌶️🍫
-        </div>
-        <div class="product-info">
-          <div class="product-category">Solo Delight</div>
-          <h3>Spicy Chocolate</h3>
-          <p class="description">Dark chocolate with a hint of chili</p>
-          <div class="product-price">
-            <span class="price">RM 9.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(8)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 10 -->
-      <div class="product-card" data-product-id="10">
-        <div class="product-image" style="background: linear-gradient(135deg, #fff5ee, #ffe4b5);">
-          🤍
-        </div>
-        <div class="product-info">
-          <div class="product-category">Solo Delight</div>
-          <h3>Classic Vanilla Dream</h3>
-          <p class="description">Premium Madagascar vanilla cream</p>
-          <div class="product-price">
-            <span class="price">RM 7.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(10)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- COUPLE SET PRODUCTS (2) -->
-
-      <!-- Product 4 -->
-      <div class="product-card" data-product-id="4">
-        <div class="product-image" style="background: linear-gradient(135deg, #ff69b4, #ffb6c1);">
-          <span class="product-badge popular">POPULAR</span>
-          🍓
-        </div>
-        <div class="product-info">
-          <div class="product-category">Couple Set</div>
-          <h3>Strawberry Bliss Duo</h3>
-          <p class="description">Two donuts with fresh strawberry cream</p>
-          <div class="product-price">
-            <span class="price">RM 15.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(4)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 5 -->
-      <div class="product-card" data-product-id="5">
-        <div class="product-image" style="background: linear-gradient(135deg, #87ceeb, #4169e1);">
-          🫐🍋
-        </div>
-        <div class="product-info">
-          <div class="product-category">Couple Set</div>
-          <h3>Blueberry Lemon Pair</h3>
-          <p class="description">Perfect balance of sweet and tangy</p>
-          <div class="product-price">
-            <span class="price">RM 16.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(5)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAMILY PACK PRODUCTS (2) -->
-
-      <!-- Product 6 -->
-      <div class="product-card" data-product-id="6">
-        <div class="product-image" style="background: linear-gradient(135deg, #ffd700, #ffed4e);">
-          🥭🥥
-        </div>
-        <div class="product-info">
-          <div class="product-category">Family Pack</div>
-          <h3>Tropical Family Box</h3>
-          <p class="description">6 donuts with mango & coconut flavors</p>
-          <div class="product-price">
-            <span class="price">RM 35.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(6)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 7 -->
-      <div class="product-card" data-product-id="7">
-        <div class="product-image" style="background: linear-gradient(135deg, #8b4513, #a0522d);">
-          ☕🍫
-        </div>
-        <div class="product-info">
-          <div class="product-category">Family Pack</div>
-          <h3>Mocha Madness Pack</h3>
-          <p class="description">8 coffee and chocolate filled donuts</p>
-          <div class="product-price">
-            <span class="price">RM 42.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(7)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- PARTY BOX PRODUCTS (3) -->
-
-      <!-- Product 9 -->
-      <div class="product-card" data-product-id="9">
-        <div class="product-image" style="background: linear-gradient(135deg, #ffa500, #ff8c00);">
-          <span class="product-badge">BESTSELLER</span>
-          🎉
-        </div>
-        <div class="product-info">
-          <div class="product-category">Party Box</div>
-          <h3>Ultimate Party Box</h3>
-          <p class="description">20 assorted donuts for your celebration</p>
-          <div class="product-price">
-            <span class="price">RM 89.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(9)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 11 - NEW PARTY BOX -->
-      <div class="product-card" data-product-id="11">
-        <div class="product-image" style="background: linear-gradient(135deg, #ff1493, #ff69b4);">
-          <span class="product-badge popular">POPULAR</span>
-          🎂🎈
-        </div>
-        <div class="product-info">
-          <div class="product-category">Party Box</div>
-          <h3>Birthday Celebration Box</h3>
-          <p class="description">18 colorful donuts perfect for birthdays</p>
-          <div class="product-price">
-            <span class="price">RM 79.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(11)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 12 - NEW PARTY BOX -->
-      <div class="product-card" data-product-id="12">
-        <div class="product-image" style="background: linear-gradient(135deg, #4169e1, #6495ed);">
-          💼☕
-        </div>
-        <div class="product-info">
-          <div class="product-category">Party Box</div>
-          <h3>Office Meeting Box</h3>
-          <p class="description">15 assorted donuts for office events</p>
-          <div class="product-price">
-            <span class="price">RM 69.90</span>
-            <button class="add-cart" onclick="event.stopPropagation(); openProductModal(12)">+</button>
-          </div>
-        </div>
-      </div>
-
     </div>
   </section>
 
@@ -357,8 +155,14 @@
     </div>
   </div>
 
-  <script src="assets/scripts/main.js"></script>
-  <script src="assets/scripts/product-modal.js"></script>
+  <!-- Firebase Config (MUST BE LOADED FIRST) -->
+  <script type="module" src="assets/scripts/firebase-config.js"></script>
+  
+  <!-- Listing Script - Loads products dynamically -->
+  <script type="module" src="assets/scripts/listing-firebase.js"></script>
+  
+  <!-- Product Modal Script -->
+  <script type="module" src="assets/scripts/product-modal-firebase.js"></script>
 
 </body>
 </html>
