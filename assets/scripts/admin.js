@@ -192,8 +192,12 @@ function saveProduct(event) {
   const editId = document.getElementById('edit-product-id').value;
   const products = getProducts();
   
+  // Generate next ID by finding the highest existing ID and adding 1
+  const maxId = products.length > 0 ? Math.max(...products.map(p => p.id)) : 0;
+  const nextId = editId ? parseInt(editId) : maxId + 1;
+  
   const productData = {
-    id: editId ? parseInt(editId) : Date.now(),
+    id: nextId,
     name: document.getElementById('product-name').value,
     price: parseFloat(document.getElementById('product-price').value),
     category: document.getElementById('product-category').value,
