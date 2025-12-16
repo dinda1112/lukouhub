@@ -81,9 +81,8 @@ async function initializeDefaultProducts() {
           price: 8.90,
           category: "Solo Delight",
           description: "Indulge in our signature Nutella Banana donut - a heavenly combination of premium Nutella chocolate spread and fresh banana slices.",
-          image: "🍫🍌",
+          image: "",
           badge: "BESTSELLER",
-          gradient: "linear-gradient(135deg, #8b4513, #d2691e)",
           calories: 320
         },
         {
@@ -92,10 +91,9 @@ async function initializeDefaultProducts() {
           price: 9.90,
           category: "Solo Delight",
           description: "Experience the perfect fusion of East meets West with our Berry Matcha donut. Premium Japanese matcha cream paired with fresh mixed berries.",
-          image: "🍵🍓",
+          image: "",
           badge: "NEW",
           badgeClass: "new",
-          gradient: "linear-gradient(135deg, #90ee90, #ffb6c1)",
           calories: 280
         },
         {
@@ -104,8 +102,7 @@ async function initializeDefaultProducts() {
           price: 8.90,
           category: "Solo Delight",
           description: "For all cookie lovers! Our Cookie O'Clock donut is packed with crushed Oreo cookies and smooth cookies & cream filling.",
-          image: "🍪",
-          gradient: "linear-gradient(135deg, #deb887, #8b4513)",
+          image: "",
           calories: 340
         },
         {
@@ -114,10 +111,9 @@ async function initializeDefaultProducts() {
           price: 15.90,
           category: "Couple Set",
           description: "Share the love with our Strawberry Bliss Duo! Two perfectly crafted donuts filled with fresh strawberry cream.",
-          image: "🍓",
+          image: "",
           badge: "POPULAR",
           badgeClass: "popular",
-          gradient: "linear-gradient(135deg, #ff69b4, #ffb6c1)",
           calories: 280
         },
         {
@@ -126,8 +122,7 @@ async function initializeDefaultProducts() {
           price: 16.90,
           category: "Couple Set",
           description: "A refreshing combination that's perfect for any time of day. Our Blueberry Lemon Pair features one blueberry-filled and one lemon-filled donut.",
-          image: "🫐🍋",
-          gradient: "linear-gradient(135deg, #87ceeb, #4169e1)",
+          image: "",
           calories: 260
         },
         {
@@ -136,8 +131,7 @@ async function initializeDefaultProducts() {
           price: 35.90,
           category: "Family Pack",
           description: "Bring tropical vibes to your family gathering! This box contains 6 delicious donuts with exotic mango and coconut flavors.",
-          image: "🥭🥥",
-          gradient: "linear-gradient(135deg, #ffd700, #ffed4e)",
+          image: "",
           calories: 250
         },
         {
@@ -146,8 +140,7 @@ async function initializeDefaultProducts() {
           price: 42.90,
           category: "Family Pack",
           description: "For coffee lovers! Our Mocha Madness Pack includes 8 donuts filled with rich coffee and premium chocolate.",
-          image: "☕🍫",
-          gradient: "linear-gradient(135deg, #8b4513, #a0522d)",
+          image: "",
           calories: 310
         },
         {
@@ -156,10 +149,9 @@ async function initializeDefaultProducts() {
           price: 9.90,
           category: "Solo Delight",
           description: "For the adventurous! Our Spicy Chocolate donut combines dark chocolate with a subtle hint of chili.",
-          image: "🌶️🍫",
+          image: "",
           badge: "NEW",
           badgeClass: "new",
-          gradient: "linear-gradient(135deg, #ff6347, #ff4500)",
           calories: 290
         },
         {
@@ -168,9 +160,8 @@ async function initializeDefaultProducts() {
           price: 89.90,
           category: "Party Box",
           description: "Make your celebration unforgettable! Our Ultimate Party Box includes 20 assorted donuts with various flavors.",
-          image: "🎉",
+          image: "",
           badge: "BESTSELLER",
-          gradient: "linear-gradient(135deg, #ffa500, #ff8c00)",
           calories: 280
         },
         {
@@ -179,8 +170,7 @@ async function initializeDefaultProducts() {
           price: 7.90,
           category: "Solo Delight",
           description: "Sometimes simple is best. Our Classic Vanilla Dream features premium Madagascar vanilla cream in a perfectly fluffy donut.",
-          image: "🤍",
-          gradient: "linear-gradient(135deg, #fff5ee, #ffe4b5)",
+          image: "",
           calories: 240
         },
         {
@@ -189,10 +179,9 @@ async function initializeDefaultProducts() {
           price: 79.90,
           category: "Party Box",
           description: "Perfect for birthday parties! 18 colorful donuts with rainbow sprinkles, chocolate drizzle, and vanilla glaze.",
-          image: "🎂🎈",
+          image: "",
           badge: "POPULAR",
           badgeClass: "popular",
-          gradient: "linear-gradient(135deg, #ff1493, #ff69b4)",
           calories: 300
         },
         {
@@ -201,8 +190,7 @@ async function initializeDefaultProducts() {
           price: 69.90,
           category: "Party Box",
           description: "Ideal for office meetings and events! 15 assorted donuts including classic glazed, chocolate, and specialty flavors.",
-          image: "💼☕",
-          gradient: "linear-gradient(135deg, #4169e1, #6495ed)",
+          image: "",
           calories: 270
         }
       ];
@@ -400,12 +388,11 @@ async function saveProduct(event) {
       name: document.getElementById('product-name').value,
       price: parseFloat(document.getElementById('product-price').value),
       category: document.getElementById('product-category').value,
-      image: document.getElementById('product-image').value || '🍩',
+      image: document.getElementById('product-image').value || '',
       calories: parseInt(document.getElementById('product-calories').value) || 250,
       badge: document.getElementById('product-badge').value,
       badgeClass: getBadgeClass(document.getElementById('product-badge').value),
-      description: document.getElementById('product-description').value,
-      gradient: 'linear-gradient(135deg, #f4a460, #e08040)'
+      description: document.getElementById('product-description').value
     };
     
     if (editId) {
