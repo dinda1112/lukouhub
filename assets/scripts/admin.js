@@ -30,9 +30,9 @@ function adminLogin(event) {
   if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
     localStorage.setItem('adminLoggedIn', 'true');
     showAdminPanel();
-    showNotification('✓ Login successful!', 'success');
+    showNotification('Login successful!', 'success');
   } else {
-    showNotification('✗ Invalid username or password', 'error');
+    showNotification('Invalid username or password', 'error');
   }
 }
 
@@ -213,12 +213,12 @@ function saveProduct(event) {
     const index = products.findIndex(p => p.id === parseInt(editId));
     if (index !== -1) {
       products[index] = productData;
-      showNotification('✓ Product updated successfully!', 'success');
+      showNotification('Product updated successfully!', 'success');
     }
   } else {
     // Add new product
     products.push(productData);
-    showNotification('✓ Product added successfully!', 'success');
+    showNotification('Product added successfully!', 'success');
   }
   
   // Save to localStorage
@@ -244,7 +244,7 @@ function deleteProduct(productId) {
   loadProducts();
   loadDashboard();
   
-  showNotification('✓ Product deleted successfully!', 'success');
+  showNotification('Product deleted successfully!', 'success');
 }
 
 function cancelProductForm() {
@@ -321,7 +321,7 @@ function updateOrderStatus(orderId, newStatus) {
     saveOrders(orders);
     loadOrders();
     loadDashboard();
-    showNotification(`✓ Order ${orderId} status updated to ${newStatus}`, 'success');
+    showNotification(`Order ${orderId} status updated to ${newStatus}`, 'success');
   }
 }
 
