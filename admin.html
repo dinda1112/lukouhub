@@ -82,7 +82,7 @@
             <div class="stat-card">
               <div class="stat-icon">PROD</div>
               <div class="stat-info">
-                <h3 id="stat-products">12</h3>
+                <h3 id="stat-products">0</h3>
                 <p>Total Products</p>
               </div>
             </div>
@@ -200,7 +200,9 @@
                 </tr>
               </thead>
               <tbody id="products-table-body">
-                <!-- Products will be loaded here -->
+                <tr>
+                  <td colspan="6" class="no-data">Loading products...</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -235,7 +237,7 @@
               </thead>
               <tbody id="orders-table-body">
                 <tr>
-                  <td colspan="7" class="no-data">No orders yet</td>
+                  <td colspan="7" class="no-data">Loading orders...</td>
                 </tr>
               </tbody>
             </table>
@@ -260,7 +262,11 @@
     </div>
   </div>
 
-  <script src="assets/scripts/admin.js"></script>
+  <!-- Firebase Config (MUST BE LOADED FIRST) -->
+  <script type="module" src="assets/scripts/firebase-config.js"></script>
+  
+  <!-- Admin Script (MUST BE TYPE="module" to use Firebase) -->
+  <script type="module" src="assets/scripts/admin-firebase.js"></script>
 
 </body>
 </html>
