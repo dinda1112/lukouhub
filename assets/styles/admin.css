@@ -281,7 +281,9 @@
 }
 
 .stat-icon {
-  font-size: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
   width: 70px;
   height: 70px;
   display: flex;
