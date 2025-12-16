@@ -133,7 +133,6 @@ function loadProducts() {
       <td>${product.id}</td>
       <td>
         <div class="product-cell">
-          <div class="product-emoji">${product.image}</div>
           <div>
             <div class="product-name">${product.name}</div>
             <div class="product-desc">${product.category}</div>
