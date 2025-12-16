@@ -1,174 +1,85 @@
 /* ============================================
-   PRODUCT MODAL JAVASCRIPT
+   PRODUCT MODAL JAVASCRIPT - FIREBASE COMPATIBLE
    ============================================ */
 
-// Product database
-const products = [
-  {
-    id: 1,
-    name: "Nutella Banana",
-    price: 8.90,
-    category: "Solo Delight",
-    description: "Indulge in our signature Nutella Banana donut - a heavenly combination of premium Nutella chocolate spread and fresh banana slices, all wrapped in our fluffy Greek-style donut.",
-    image: "🍫🍌",
-    badge: "BESTSELLER",
-    gradient: "linear-gradient(135deg, #8b4513, #d2691e)",
-    calories: 320,
-    liked: "#2 Most liked",
-    rating: "85% (7)"
-  },
-  {
-    id: 2,
-    name: "Berry Matcha",
-    price: 9.90,
-    category: "Solo Delight",
-    description: "Experience the perfect fusion of East meets West with our Berry Matcha donut. Premium Japanese matcha cream paired with fresh mixed berries creates a unique flavor profile.",
-    image: "🍵🍓",
-    badge: "NEW",
-    badgeClass: "new",
-    gradient: "linear-gradient(135deg, #90ee90, #ffb6c1)",
-    calories: 280,
-    liked: "#5 Most liked",
-    rating: "92% (12)"
-  },
-  {
-    id: 3,
-    name: "Cookie O'Clock",
-    price: 8.90,
-    category: "Solo Delight",
-    description: "For all cookie lovers! Our Cookie O'Clock donut is packed with crushed Oreo cookies and smooth cookies & cream filling. A crunchy, creamy delight in every bite.",
-    image: "🍪",
-    gradient: "linear-gradient(135deg, #deb887, #8b4513)",
-    calories: 340,
-    liked: "#4 Most liked",
-    rating: "88% (9)"
-  },
-  {
-    id: 8,
-    name: "Spicy Chocolate",
-    price: 9.90,
-    category: "Solo Delight",
-    description: "For the adventurous! Our Spicy Chocolate donut combines dark chocolate with a subtle hint of chili, creating an exciting flavor journey.",
-    image: "🌶️🍫",
-    badge: "NEW",
-    badgeClass: "new",
-    gradient: "linear-gradient(135deg, #ff6347, #ff4500)",
-    calories: 290,
-    liked: "#9 Most liked",
-    rating: "78% (6)"
-  },
-  {
-    id: 10,
-    name: "Classic Vanilla Dream",
-    price: 7.90,
-    category: "Solo Delight",
-    description: "Sometimes simple is best. Our Classic Vanilla Dream features premium Madagascar vanilla cream in a perfectly fluffy donut.",
-    image: "🤍",
-    gradient: "linear-gradient(135deg, #fff5ee, #ffe4b5)",
-    calories: 240,
-    liked: "#10 Most liked",
-    rating: "87% (14)"
-  },
-  
-  // COUPLE SET (2 items)
-  {
-    id: 4,
-    name: "Strawberry Bliss Duo",
-    price: 15.90,
-    category: "Couple Set",
-    description: "Share the love with our Strawberry Bliss Duo! Two perfectly crafted donuts filled with fresh strawberry cream and topped with real strawberry pieces.",
-    image: "🍓",
-    badge: "POPULAR",
-    badgeClass: "popular",
-    gradient: "linear-gradient(135deg, #ff69b4, #ffb6c1)",
-    calories: 280,
-    liked: "#1 Most liked",
-    rating: "95% (18)"
-  },
-  {
-    id: 5,
-    name: "Blueberry Lemon Pair",
-    price: 16.90,
-    category: "Couple Set",
-    description: "A refreshing combination that's perfect for any time of day. Our Blueberry Lemon Pair features one blueberry-filled and one lemon-filled donut.",
-    image: "🫐🍋",
-    gradient: "linear-gradient(135deg, #87ceeb, #4169e1)",
-    calories: 260,
-    liked: "#7 Most liked",
-    rating: "86% (11)"
-  },
-  
-  // FAMILY PACK (2 items)
-  {
-    id: 6,
-    name: "Tropical Family Box",
-    price: 35.90,
-    category: "Family Pack",
-    description: "Bring tropical vibes to your family gathering! This box contains 6 delicious donuts with exotic mango and coconut flavors.",
-    image: "🥭🥥",
-    gradient: "linear-gradient(135deg, #ffd700, #ffed4e)",
-    calories: 250,
-    liked: "#6 Most liked",
-    rating: "90% (15)"
-  },
-  {
-    id: 7,
-    name: "Mocha Madness Pack",
-    price: 42.90,
-    category: "Family Pack",
-    description: "For coffee lovers! Our Mocha Madness Pack includes 8 donuts filled with rich coffee and premium chocolate. Perfect for family gatherings.",
-    image: "☕🍫",
-    gradient: "linear-gradient(135deg, #8b4513, #a0522d)",
-    calories: 310,
-    liked: "#8 Most liked",
-    rating: "84% (10)"
-  },
-  
-  // PARTY BOX (3 items) - ADDED 2 MORE!
-  {
-    id: 9,
-    name: "Ultimate Party Box",
-    price: 89.90,
-    category: "Party Box",
-    description: "Make your celebration unforgettable! Our Ultimate Party Box includes 20 assorted donuts with various flavors - from classic favorites to exotic creations.",
-    image: "🎉",
-    badge: "BESTSELLER",
-    gradient: "linear-gradient(135deg, #ffa500, #ff8c00)",
-    calories: 280,
-    liked: "#3 Most liked",
-    rating: "93% (25)"
-  },
-  {
-    id: 11,
-    name: "Birthday Celebration Box",
-    price: 79.90,
-    category: "Party Box",
-    description: "Perfect for birthday parties! 18 colorful donuts with rainbow sprinkles, chocolate drizzle, and vanilla glaze. Guaranteed to bring smiles!",
-    image: "🎂🎈",
-    badge: "POPULAR",
-    badgeClass: "popular",
-    gradient: "linear-gradient(135deg, #ff1493, #ff69b4)",
-    calories: 300,
-    liked: "#11 Most liked",
-    rating: "91% (20)"
-  },
-  {
-    id: 12,
-    name: "Office Meeting Box",
-    price: 69.90,
-    category: "Party Box",
-    description: "Ideal for office meetings and events! 15 assorted donuts including classic glazed, chocolate, and specialty flavors. Perfect for sharing!",
-    image: "💼☕",
-    gradient: "linear-gradient(135deg, #4169e1, #6495ed)",
-    calories: 270,
-    liked: "#12 Most liked",
-    rating: "89% (16)"
-  }
-];
+// Import Firebase - this will be loaded from firebase-config.js
+let db, collection, getDocs;
+
+// Product array - will be loaded from Firebase
+let products = [];
 
 // Current modal state
 let currentModalProduct = null;
 let modalQuantity = 1;
+
+// Initialize Firebase and load products
+async function initializeProducts() {
+  try {
+    // Import Firebase functions dynamically
+    const firebaseModule = await import('./firebase-config.js');
+    db = firebaseModule.db;
+    collection = firebaseModule.collection;
+    getDocs = firebaseModule.getDocs;
+    
+    console.log('Firebase initialized, loading products...');
+    
+    // Load products from Firebase
+    const productsSnapshot = await getDocs(collection(db, 'products'));
+    products = productsSnapshot.docs.map(doc => ({
+      firestoreId: doc.id,
+      ...doc.data()
+    }));
+    
+    console.log(`Loaded ${products.length} products from Firebase`);
+    
+  } catch (error) {
+    console.error('Error loading products from Firebase:', error);
+    console.log('Using fallback products');
+    
+    // Fallback to default products if Firebase fails
+    products = [
+      {
+        id: 1,
+        name: "Nutella Banana",
+        price: 8.90,
+        category: "Solo Delight",
+        description: "Indulge in our signature Nutella Banana donut - a heavenly combination of premium Nutella chocolate spread and fresh banana slices.",
+        image: "🍫🍌",
+        badge: "BESTSELLER",
+        gradient: "linear-gradient(135deg, #8b4513, #d2691e)",
+        calories: 320,
+        liked: "#2 Most liked",
+        rating: "85% (7)"
+      },
+      {
+        id: 2,
+        name: "Berry Matcha",
+        price: 9.90,
+        category: "Solo Delight",
+        description: "Experience the perfect fusion of East meets West with our Berry Matcha donut.",
+        image: "🍵🍓",
+        badge: "NEW",
+        badgeClass: "new",
+        gradient: "linear-gradient(135deg, #90ee90, #ffb6c1)",
+        calories: 280,
+        liked: "#5 Most liked",
+        rating: "92% (12)"
+      },
+      {
+        id: 3,
+        name: "Cookie O'Clock",
+        price: 8.90,
+        category: "Solo Delight",
+        description: "For all cookie lovers! Our Cookie O'Clock donut is packed with crushed Oreo cookies.",
+        image: "🍪",
+        gradient: "linear-gradient(135deg, #deb887, #8b4513)",
+        calories: 340,
+        liked: "#4 Most liked",
+        rating: "88% (9)"
+      }
+    ];
+  }
+}
 
 // Show notification function
 function showNotification(message, type = 'success') {
@@ -226,14 +137,14 @@ function openProductModal(productId) {
     return;
   }
   
-  // Set gradient background
+  // Set gradient background (use default if not provided)
   const imageSection = document.querySelector('.modal-image-section');
   if (imageSection) {
-    imageSection.style.background = product.gradient;
+    imageSection.style.background = product.gradient || 'linear-gradient(135deg, #f4a460, #e08040)';
   }
   
-  // Update image
-  if (modalImage) modalImage.textContent = product.image;
+  // Update image (use default emoji if empty)
+  if (modalImage) modalImage.textContent = product.image || '🍩';
   
   // Update badge
   if (modalBadges) {
@@ -247,15 +158,15 @@ function openProductModal(productId) {
   // Update info
   if (modalCategory) modalCategory.textContent = product.category;
   if (modalName) modalName.textContent = product.name;
-  if (modalCalories) modalCalories.textContent = `${product.calories} cal`;
+  if (modalCalories) modalCalories.textContent = `${product.calories || 250} cal`;
   if (modalDescription) modalDescription.textContent = product.description;
   
-  // Update rating
+  // Update rating (use defaults if not provided)
   const ratingDiv = document.querySelector('.modal-rating');
   if (ratingDiv) {
     ratingDiv.innerHTML = `
-      <span class="modal-liked">${product.liked}</span>
-      <span class="modal-thumbs">👍 ${product.rating}</span>
+      <span class="modal-liked">${product.liked || '#1 Most liked'}</span>
+      <span class="modal-thumbs">👍 ${product.rating || '90% (10)'}</span>
     `;
   }
   
@@ -351,7 +262,7 @@ function modalAddToCart() {
       price: currentModalProduct.price,
       quantity: modalQuantity,
       category: currentModalProduct.category,
-      image: currentModalProduct.image
+      image: currentModalProduct.image || '🍩'
     });
     showNotification(`${currentModalProduct.name} added to cart!`, 'success');
   }
@@ -417,8 +328,11 @@ document.addEventListener('keydown', function(e) {
 });
 
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
   console.log('Product modal script loaded');
+  
+  // Initialize products from Firebase
+  await initializeProducts();
   
   // Update cart count on load
   updateCartCount();
