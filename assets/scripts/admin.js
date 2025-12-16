@@ -1,10 +1,17 @@
 /* ============================================
-   ADMIN PANEL JAVASCRIPT
+   ADMIN PANEL JAVASCRIPT - FIREBASE VERSION
    ============================================ */
 
-// Default admin credentials (you can change these)
+// Import Firebase functions
+import { db, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy } from './firebase-config.js';
+
+// Default admin credentials
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'lukouhub2024';
+
+// Global variables
+let allProducts = [];
+let allOrders = [];
 
 // Check if already logged in
 document.addEventListener('DOMContentLoaded', function() {
@@ -12,11 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (isLoggedIn === 'true') {
     showAdminPanel();
   }
-  
-  // Load dashboard data
-  loadDashboard();
-  loadProducts();
-  loadOrders();
 });
 
 // ============ LOGIN/LOGOUT ============
@@ -36,6 +38,8 @@ function adminLogin(event) {
   }
 }
 
+window.adminLogin = adminLogin;
+
 function adminLogout() {
   if (confirm('Are you sure you want to logout?')) {
     localStorage.removeItem('adminLoggedIn');
@@ -45,9 +49,174 @@ function adminLogout() {
   }
 }
 
-function showAdminPanel() {
+window.adminLogout = adminLogout;
+
+async function showAdminPanel() {
   document.getElementById('admin-login').style.display = 'none';
   document.getElementById('admin-panel').style.display = 'block';
+  
+  // Initialize default products if none exist
+  await initializeDefaultProducts();
+  
+  // Load all data
+  await loadDashboard();
+  await loadProducts();
+  await loadOrders();
+}
+
+// ============ INITIALIZE DEFAULT PRODUCTS ============
+
+async function initializeDefaultProducts() {
+  try {
+    const productsSnapshot = await getDocs(collection(db, 'products'));
+    
+    // If no products exist, add default products
+    if (productsSnapshot.empty) {
+      console.log('No products found. Adding default products...');
+      
+      const defaultProducts = [
+        {
+          id: 1,
+          name: "Nutella Banana",
+          price: 8.90,
+          category: "Solo Delight",
+          description: "Indulge in our signature Nutella Banana donut - a heavenly combination of premium Nutella chocolate spread and fresh banana slices.",
+          image: "🍫🍌",
+          badge: "BESTSELLER",
+          gradient: "linear-gradient(135deg, #8b4513, #d2691e)",
+          calories: 320
+        },
+        {
+          id: 2,
+          name: "Berry Matcha",
+          price: 9.90,
+          category: "Solo Delight",
+          description: "Experience the perfect fusion of East meets West with our Berry Matcha donut. Premium Japanese matcha cream paired with fresh mixed berries.",
+          image: "🍵🍓",
+          badge: "NEW",
+          badgeClass: "new",
+          gradient: "linear-gradient(135deg, #90ee90, #ffb6c1)",
+          calories: 280
+        },
+        {
+          id: 3,
+          name: "Cookie O'Clock",
+          price: 8.90,
+          category: "Solo Delight",
+          description: "For all cookie lovers! Our Cookie O'Clock donut is packed with crushed Oreo cookies and smooth cookies & cream filling.",
+          image: "🍪",
+          gradient: "linear-gradient(135deg, #deb887, #8b4513)",
+          calories: 340
+        },
+        {
+          id: 4,
+          name: "Strawberry Bliss Duo",
+          price: 15.90,
+          category: "Couple Set",
+          description: "Share the love with our Strawberry Bliss Duo! Two perfectly crafted donuts filled with fresh strawberry cream.",
+          image: "🍓",
+          badge: "POPULAR",
+          badgeClass: "popular",
+          gradient: "linear-gradient(135deg, #ff69b4, #ffb6c1)",
+          calories: 280
+        },
+        {
+          id: 5,
+          name: "Blueberry Lemon Pair",
+          price: 16.90,
+          category: "Couple Set",
+          description: "A refreshing combination that's perfect for any time of day. Our Blueberry Lemon Pair features one blueberry-filled and one lemon-filled donut.",
+          image: "🫐🍋",
+          gradient: "linear-gradient(135deg, #87ceeb, #4169e1)",
+          calories: 260
+        },
+        {
+          id: 6,
+          name: "Tropical Family Box",
+          price: 35.90,
+          category: "Family Pack",
+          description: "Bring tropical vibes to your family gathering! This box contains 6 delicious donuts with exotic mango and coconut flavors.",
+          image: "🥭🥥",
+          gradient: "linear-gradient(135deg, #ffd700, #ffed4e)",
+          calories: 250
+        },
+        {
+          id: 7,
+          name: "Mocha Madness Pack",
+          price: 42.90,
+          category: "Family Pack",
+          description: "For coffee lovers! Our Mocha Madness Pack includes 8 donuts filled with rich coffee and premium chocolate.",
+          image: "☕🍫",
+          gradient: "linear-gradient(135deg, #8b4513, #a0522d)",
+          calories: 310
+        },
+        {
+          id: 8,
+          name: "Spicy Chocolate",
+          price: 9.90,
+          category: "Solo Delight",
+          description: "For the adventurous! Our Spicy Chocolate donut combines dark chocolate with a subtle hint of chili.",
+          image: "🌶️🍫",
+          badge: "NEW",
+          badgeClass: "new",
+          gradient: "linear-gradient(135deg, #ff6347, #ff4500)",
+          calories: 290
+        },
+        {
+          id: 9,
+          name: "Ultimate Party Box",
+          price: 89.90,
+          category: "Party Box",
+          description: "Make your celebration unforgettable! Our Ultimate Party Box includes 20 assorted donuts with various flavors.",
+          image: "🎉",
+          badge: "BESTSELLER",
+          gradient: "linear-gradient(135deg, #ffa500, #ff8c00)",
+          calories: 280
+        },
+        {
+          id: 10,
+          name: "Classic Vanilla Dream",
+          price: 7.90,
+          category: "Solo Delight",
+          description: "Sometimes simple is best. Our Classic Vanilla Dream features premium Madagascar vanilla cream in a perfectly fluffy donut.",
+          image: "🤍",
+          gradient: "linear-gradient(135deg, #fff5ee, #ffe4b5)",
+          calories: 240
+        },
+        {
+          id: 11,
+          name: "Birthday Celebration Box",
+          price: 79.90,
+          category: "Party Box",
+          description: "Perfect for birthday parties! 18 colorful donuts with rainbow sprinkles, chocolate drizzle, and vanilla glaze.",
+          image: "🎂🎈",
+          badge: "POPULAR",
+          badgeClass: "popular",
+          gradient: "linear-gradient(135deg, #ff1493, #ff69b4)",
+          calories: 300
+        },
+        {
+          id: 12,
+          name: "Office Meeting Box",
+          price: 69.90,
+          category: "Party Box",
+          description: "Ideal for office meetings and events! 15 assorted donuts including classic glazed, chocolate, and specialty flavors.",
+          image: "💼☕",
+          gradient: "linear-gradient(135deg, #4169e1, #6495ed)",
+          calories: 270
+        }
+      ];
+
+      // Add each product to Firebase
+      for (const product of defaultProducts) {
+        await addDoc(collection(db, 'products'), product);
+      }
+      
+      console.log('Default products added successfully!');
+    }
+  } catch (error) {
+    console.error('Error initializing products:', error);
+  }
 }
 
 // ============ NAVIGATION ============
@@ -77,81 +246,109 @@ function showSection(sectionName) {
   }
 }
 
+window.showSection = showSection;
+
 // ============ DASHBOARD ============
 
-function loadDashboard() {
-  const products = getProducts();
-  const orders = getOrders();
-  
-  // Update stats
-  document.getElementById('stat-products').textContent = products.length;
-  document.getElementById('stat-orders').textContent = orders.length;
-  
-  // Calculate revenue
-  const revenue = orders.reduce((sum, order) => sum + order.total, 0);
-  document.getElementById('stat-revenue').textContent = `RM ${revenue.toFixed(2)}`;
-  
-  // Count pending orders
-  const pending = orders.filter(order => order.status === 'pending').length;
-  document.getElementById('stat-pending').textContent = pending;
-  
-  // Show recent orders (last 5)
-  const recentOrders = orders.slice(-5).reverse();
-  const recentOrdersList = document.getElementById('recent-orders-list');
-  
-  if (recentOrders.length === 0) {
-    recentOrdersList.innerHTML = '<p class="no-data">No orders yet</p>';
-  } else {
-    recentOrdersList.innerHTML = recentOrders.map(order => `
-      <div style="padding: 15px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <strong>${order.orderId}</strong> - ${order.customerName}
-          <br><small style="color: #999;">${new Date(order.date).toLocaleDateString()}</small>
+async function loadDashboard() {
+  try {
+    // Get products
+    const productsSnapshot = await getDocs(collection(db, 'products'));
+    allProducts = productsSnapshot.docs.map(doc => ({
+      firestoreId: doc.id,
+      ...doc.data()
+    }));
+    
+    // Get orders
+    const ordersSnapshot = await getDocs(collection(db, 'orders'));
+    allOrders = ordersSnapshot.docs.map(doc => ({
+      firestoreId: doc.id,
+      ...doc.data()
+    }));
+    
+    // Update stats
+    document.getElementById('stat-products').textContent = allProducts.length;
+    document.getElementById('stat-orders').textContent = allOrders.length;
+    
+    // Calculate revenue
+    const revenue = allOrders.reduce((sum, order) => sum + (order.total || 0), 0);
+    document.getElementById('stat-revenue').textContent = `RM ${revenue.toFixed(2)}`;
+    
+    // Count pending orders
+    const pending = allOrders.filter(order => order.status === 'pending').length;
+    document.getElementById('stat-pending').textContent = pending;
+    
+    // Show recent orders (last 5)
+    const recentOrders = allOrders.slice(-5).reverse();
+    const recentOrdersList = document.getElementById('recent-orders-list');
+    
+    if (recentOrders.length === 0) {
+      recentOrdersList.innerHTML = '<p class="no-data">No orders yet</p>';
+    } else {
+      recentOrdersList.innerHTML = recentOrders.map(order => `
+        <div style="padding: 15px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong>${order.orderId}</strong> - ${order.customerName}
+            <br><small style="color: #999;">${new Date(order.date).toLocaleDateString()}</small>
+          </div>
+          <div>
+            <span class="status-badge ${order.status}">${order.status}</span>
+            <strong style="margin-left: 15px;">RM ${order.total.toFixed(2)}</strong>
+          </div>
         </div>
-        <div>
-          <span class="status-badge ${order.status}">${order.status}</span>
-          <strong style="margin-left: 15px;">RM ${order.total.toFixed(2)}</strong>
-        </div>
-      </div>
-    `).join('');
+      `).join('');
+    }
+  } catch (error) {
+    console.error('Error loading dashboard:', error);
+    showNotification('Error loading dashboard data', 'error');
   }
 }
 
 // ============ PRODUCTS MANAGEMENT ============
 
-function loadProducts() {
-  const products = getProducts();
-  const tbody = document.getElementById('products-table-body');
-  
-  if (products.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="no-data">No products yet. Add your first product!</td></tr>';
-    return;
-  }
-  
-  tbody.innerHTML = products.map(product => `
-    <tr>
-      <td>${product.id}</td>
-      <td>
-        <div class="product-cell">
-          <div>
-            <div class="product-name">${product.name}</div>
-            <div class="product-desc">${product.category}</div>
+async function loadProducts() {
+  try {
+    const productsSnapshot = await getDocs(collection(db, 'products'));
+    allProducts = productsSnapshot.docs.map(doc => ({
+      firestoreId: doc.id,
+      ...doc.data()
+    }));
+    
+    const tbody = document.getElementById('products-table-body');
+    
+    if (allProducts.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="no-data">No products yet. Add your first product!</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = allProducts.map(product => `
+      <tr>
+        <td>${product.id}</td>
+        <td>
+          <div class="product-cell">
+            <div>
+              <div class="product-name">${product.name}</div>
+              <div class="product-desc">${product.category}</div>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>${product.category}</td>
-      <td>RM ${product.price.toFixed(2)}</td>
-      <td>
-        ${product.badge ? `<span class="badge ${product.badgeClass || product.badge.toLowerCase()}">${product.badge}</span>` : '-'}
-      </td>
-      <td>
-        <div class="action-buttons">
-          <button class="btn-edit" onclick="editProduct(${product.id})">Edit</button>
-          <button class="btn-delete" onclick="deleteProduct(${product.id})">Delete</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+        </td>
+        <td>${product.category}</td>
+        <td>RM ${product.price.toFixed(2)}</td>
+        <td>
+          ${product.badge ? `<span class="badge ${product.badgeClass || product.badge.toLowerCase()}">${product.badge}</span>` : '-'}
+        </td>
+        <td>
+          <div class="action-buttons">
+            <button class="btn-edit" onclick="editProduct('${product.firestoreId}')">Edit</button>
+            <button class="btn-delete" onclick="deleteProduct('${product.firestoreId}')">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading products:', error);
+    showNotification('Error loading products', 'error');
+  }
 }
 
 function showAddProductForm() {
@@ -162,9 +359,10 @@ function showAddProductForm() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function editProduct(productId) {
-  const products = getProducts();
-  const product = products.find(p => p.id === productId);
+window.showAddProductForm = showAddProductForm;
+
+function editProduct(firestoreId) {
+  const product = allProducts.find(p => p.firestoreId === firestoreId);
   
   if (!product) return;
   
@@ -173,11 +371,11 @@ function editProduct(productId) {
   document.getElementById('form-title').textContent = 'Edit Product';
   
   // Fill form
-  document.getElementById('edit-product-id').value = product.id;
+  document.getElementById('edit-product-id').value = product.firestoreId;
   document.getElementById('product-name').value = product.name;
   document.getElementById('product-price').value = product.price;
   document.getElementById('product-category').value = product.category;
-  document.getElementById('product-image').value = product.image;
+  document.getElementById('product-image').value = product.image || '';
   document.getElementById('product-calories').value = product.calories || '';
   document.getElementById('product-badge').value = product.badge || '';
   document.getElementById('product-description').value = product.description;
@@ -185,74 +383,79 @@ function editProduct(productId) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function saveProduct(event) {
+window.editProduct = editProduct;
+
+async function saveProduct(event) {
   event.preventDefault();
   
-  const editId = document.getElementById('edit-product-id').value;
-  const products = getProducts();
-  
-  // Generate next ID by finding the highest existing ID and adding 1
-  const maxId = products.length > 0 ? Math.max(...products.map(p => p.id)) : 0;
-  const nextId = editId ? parseInt(editId) : maxId + 1;
-  
-  const productData = {
-    id: nextId,
-    name: document.getElementById('product-name').value,
-    price: parseFloat(document.getElementById('product-price').value),
-    category: document.getElementById('product-category').value,
-    image: document.getElementById('product-image').value,
-    calories: parseInt(document.getElementById('product-calories').value) || 250,
-    badge: document.getElementById('product-badge').value,
-    badgeClass: getBadgeClass(document.getElementById('product-badge').value),
-    description: document.getElementById('product-description').value,
-    gradient: 'linear-gradient(135deg, #f4a460, #e08040)', // Default gradient
-    liked: '#' + (nextId) + ' Most liked',
-    rating: '90% (10)'
-  };
-  
-  if (editId) {
-    // Update existing product
-    const index = products.findIndex(p => p.id === parseInt(editId));
-    if (index !== -1) {
-      products[index] = productData;
+  try {
+    const editId = document.getElementById('edit-product-id').value;
+    
+    // Generate next numeric ID for new products
+    const maxId = allProducts.length > 0 ? Math.max(...allProducts.map(p => p.id || 0)) : 0;
+    const nextId = editId ? allProducts.find(p => p.firestoreId === editId).id : maxId + 1;
+    
+    const productData = {
+      id: nextId,
+      name: document.getElementById('product-name').value,
+      price: parseFloat(document.getElementById('product-price').value),
+      category: document.getElementById('product-category').value,
+      image: document.getElementById('product-image').value || '🍩',
+      calories: parseInt(document.getElementById('product-calories').value) || 250,
+      badge: document.getElementById('product-badge').value,
+      badgeClass: getBadgeClass(document.getElementById('product-badge').value),
+      description: document.getElementById('product-description').value,
+      gradient: 'linear-gradient(135deg, #f4a460, #e08040)'
+    };
+    
+    if (editId) {
+      // Update existing product in Firebase
+      await updateDoc(doc(db, 'products', editId), productData);
       showNotification('Product updated successfully!', 'success');
+    } else {
+      // Add new product to Firebase
+      await addDoc(collection(db, 'products'), productData);
+      showNotification('Product added successfully!', 'success');
     }
-  } else {
-    // Add new product
-    products.push(productData);
-    showNotification('Product added successfully!', 'success');
+    
+    // Reload products table
+    await loadProducts();
+    await loadDashboard();
+    
+    // Hide form
+    cancelProductForm();
+  } catch (error) {
+    console.error('Error saving product:', error);
+    showNotification('Error saving product: ' + error.message, 'error');
   }
-  
-  // Save to localStorage
-  saveProducts(products);
-  
-  // Reload products table
-  loadProducts();
-  loadDashboard();
-  
-  // Hide form
-  cancelProductForm();
 }
 
-function deleteProduct(productId) {
+window.saveProduct = saveProduct;
+
+async function deleteProduct(firestoreId) {
   if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
     return;
   }
   
-  const products = getProducts();
-  const filtered = products.filter(p => p.id !== productId);
-  
-  saveProducts(filtered);
-  loadProducts();
-  loadDashboard();
-  
-  showNotification('Product deleted successfully!', 'success');
+  try {
+    await deleteDoc(doc(db, 'products', firestoreId));
+    await loadProducts();
+    await loadDashboard();
+    showNotification('Product deleted successfully!', 'success');
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    showNotification('Error deleting product: ' + error.message, 'error');
+  }
 }
+
+window.deleteProduct = deleteProduct;
 
 function cancelProductForm() {
   document.getElementById('product-form-container').style.display = 'none';
   document.getElementById('product-form').reset();
 }
+
+window.cancelProductForm = cancelProductForm;
 
 function getBadgeClass(badge) {
   if (badge === 'NEW') return 'new';
@@ -262,38 +465,48 @@ function getBadgeClass(badge) {
 
 // ============ ORDERS MANAGEMENT ============
 
-function loadOrders() {
-  const orders = getOrders();
-  const tbody = document.getElementById('orders-table-body');
-  
-  if (orders.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" class="no-data">No orders yet</td></tr>';
-    return;
+async function loadOrders() {
+  try {
+    const ordersSnapshot = await getDocs(query(collection(db, 'orders'), orderBy('date', 'desc')));
+    allOrders = ordersSnapshot.docs.map(doc => ({
+      firestoreId: doc.id,
+      ...doc.data()
+    }));
+    
+    const tbody = document.getElementById('orders-table-body');
+    
+    if (allOrders.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="no-data">No orders yet</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = allOrders.map(order => `
+      <tr data-status="${order.status}">
+        <td><strong>${order.orderId}</strong></td>
+        <td>${new Date(order.date).toLocaleDateString()}</td>
+        <td>
+          <div>${order.customerName}</div>
+          <small style="color: #999;">${order.phone}</small>
+        </td>
+        <td>${order.items.length} items</td>
+        <td><strong>RM ${order.total.toFixed(2)}</strong></td>
+        <td>
+          <select class="status-badge ${order.status}" onchange="updateOrderStatus('${order.firestoreId}', this.value)" style="border: none; background: transparent; font-weight: 600; cursor: pointer;">
+            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+            <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>Preparing</option>
+            <option value="ready" ${order.status === 'ready' ? 'selected' : ''}>Ready</option>
+            <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
+          </select>
+        </td>
+        <td>
+          <button class="btn-view" onclick="viewOrderDetails('${order.firestoreId}')">View</button>
+        </td>
+      </tr>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading orders:', error);
+    showNotification('Error loading orders', 'error');
   }
-  
-  tbody.innerHTML = orders.map(order => `
-    <tr data-status="${order.status}">
-      <td><strong>${order.orderId}</strong></td>
-      <td>${new Date(order.date).toLocaleDateString()}</td>
-      <td>
-        <div>${order.customerName}</div>
-        <small style="color: #999;">${order.phone}</small>
-      </td>
-      <td>${order.items.length} items</td>
-      <td><strong>RM ${order.total.toFixed(2)}</strong></td>
-      <td>
-        <select class="status-badge ${order.status}" onchange="updateOrderStatus('${order.orderId}', this.value)" style="border: none; background: transparent; font-weight: 600; cursor: pointer;">
-          <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
-          <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>Preparing</option>
-          <option value="ready" ${order.status === 'ready' ? 'selected' : ''}>Ready</option>
-          <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
-        </select>
-      </td>
-      <td>
-        <button class="btn-view" onclick="viewOrderDetails('${order.orderId}')">View</button>
-      </td>
-    </tr>
-  `).join('');
 }
 
 function filterOrders(status) {
@@ -314,22 +527,29 @@ function filterOrders(status) {
   });
 }
 
-function updateOrderStatus(orderId, newStatus) {
-  const orders = getOrders();
-  const order = orders.find(o => o.orderId === orderId);
-  
-  if (order) {
-    order.status = newStatus;
-    saveOrders(orders);
-    loadOrders();
-    loadDashboard();
-    showNotification(`Order ${orderId} status updated to ${newStatus}`, 'success');
+window.filterOrders = filterOrders;
+
+async function updateOrderStatus(firestoreId, newStatus) {
+  try {
+    await updateDoc(doc(db, 'orders', firestoreId), {
+      status: newStatus
+    });
+    
+    await loadOrders();
+    await loadDashboard();
+    
+    const order = allOrders.find(o => o.firestoreId === firestoreId);
+    showNotification(`Order ${order.orderId} status updated to ${newStatus}`, 'success');
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    showNotification('Error updating order status', 'error');
   }
 }
 
-function viewOrderDetails(orderId) {
-  const orders = getOrders();
-  const order = orders.find(o => o.orderId === orderId);
+window.updateOrderStatus = updateOrderStatus;
+
+function viewOrderDetails(firestoreId) {
+  const order = allOrders.find(o => o.firestoreId === firestoreId);
   
   if (!order) return;
   
@@ -388,193 +608,13 @@ function viewOrderDetails(orderId) {
   document.getElementById('order-modal').classList.add('active');
 }
 
+window.viewOrderDetails = viewOrderDetails;
+
 function closeOrderModal() {
   document.getElementById('order-modal').classList.remove('active');
 }
 
-// ============ DATA STORAGE (LocalStorage) ============
-
-function getProducts() {
-  const stored = localStorage.getItem('products');
-  if (stored) {
-    return JSON.parse(stored);
-  }
-  
-  // Default products (from product-modal.js)
-  const defaultProducts = [
-    {
-      id: 1,
-      name: "Nutella Banana",
-      price: 8.90,
-      category: "Solo Delight",
-      description: "Indulge in our signature Nutella Banana donut - a heavenly combination of premium Nutella chocolate spread and fresh banana slices, all wrapped in our fluffy Greek-style donut.",
-      image: "🍫🍌",
-      badge: "BESTSELLER",
-      gradient: "linear-gradient(135deg, #8b4513, #d2691e)",
-      calories: 320,
-      liked: "#2 Most liked",
-      rating: "85% (7)"
-    },
-    {
-      id: 2,
-      name: "Berry Matcha",
-      price: 9.90,
-      category: "Solo Delight",
-      description: "Experience the perfect fusion of East meets West with our Berry Matcha donut. Premium Japanese matcha cream paired with fresh mixed berries creates a unique flavor profile.",
-      image: "🍵🍓",
-      badge: "NEW",
-      badgeClass: "new",
-      gradient: "linear-gradient(135deg, #90ee90, #ffb6c1)",
-      calories: 280,
-      liked: "#5 Most liked",
-      rating: "92% (12)"
-    },
-    {
-      id: 3,
-      name: "Cookie O'Clock",
-      price: 8.90,
-      category: "Solo Delight",
-      description: "For all cookie lovers! Our Cookie O'Clock donut is packed with crushed Oreo cookies and smooth cookies & cream filling. A crunchy, creamy delight in every bite.",
-      image: "🍪",
-      gradient: "linear-gradient(135deg, #deb887, #8b4513)",
-      calories: 340,
-      liked: "#4 Most liked",
-      rating: "88% (9)"
-    },
-    {
-      id: 4,
-      name: "Strawberry Bliss Duo",
-      price: 15.90,
-      category: "Couple Set",
-      description: "Share the love with our Strawberry Bliss Duo! Two perfectly crafted donuts filled with fresh strawberry cream and topped with real strawberry pieces.",
-      image: "🍓",
-      badge: "POPULAR",
-      badgeClass: "popular",
-      gradient: "linear-gradient(135deg, #ff69b4, #ffb6c1)",
-      calories: 280,
-      liked: "#1 Most liked",
-      rating: "95% (18)"
-    },
-    {
-      id: 5,
-      name: "Blueberry Lemon Pair",
-      price: 16.90,
-      category: "Couple Set",
-      description: "A refreshing combination that's perfect for any time of day. Our Blueberry Lemon Pair features one blueberry-filled and one lemon-filled donut.",
-      image: "🫐🍋",
-      gradient: "linear-gradient(135deg, #87ceeb, #4169e1)",
-      calories: 260,
-      liked: "#7 Most liked",
-      rating: "86% (11)"
-    },
-    {
-      id: 6,
-      name: "Tropical Family Box",
-      price: 35.90,
-      category: "Family Pack",
-      description: "Bring tropical vibes to your family gathering! This box contains 6 delicious donuts with exotic mango and coconut flavors.",
-      image: "🥭🥥",
-      gradient: "linear-gradient(135deg, #ffd700, #ffed4e)",
-      calories: 250,
-      liked: "#6 Most liked",
-      rating: "90% (15)"
-    },
-    {
-      id: 7,
-      name: "Mocha Madness Pack",
-      price: 42.90,
-      category: "Family Pack",
-      description: "For coffee lovers! Our Mocha Madness Pack includes 8 donuts filled with rich coffee and premium chocolate. Perfect for family gatherings.",
-      image: "☕🍫",
-      gradient: "linear-gradient(135deg, #8b4513, #a0522d)",
-      calories: 310,
-      liked: "#8 Most liked",
-      rating: "84% (10)"
-    },
-    {
-      id: 8,
-      name: "Spicy Chocolate",
-      price: 9.90,
-      category: "Solo Delight",
-      description: "For the adventurous! Our Spicy Chocolate donut combines dark chocolate with a subtle hint of chili, creating an exciting flavor journey.",
-      image: "🌶️🍫",
-      badge: "NEW",
-      badgeClass: "new",
-      gradient: "linear-gradient(135deg, #ff6347, #ff4500)",
-      calories: 290,
-      liked: "#9 Most liked",
-      rating: "78% (6)"
-    },
-    {
-      id: 9,
-      name: "Ultimate Party Box",
-      price: 89.90,
-      category: "Party Box",
-      description: "Make your celebration unforgettable! Our Ultimate Party Box includes 20 assorted donuts with various flavors - from classic favorites to exotic creations.",
-      image: "🎉",
-      badge: "BESTSELLER",
-      gradient: "linear-gradient(135deg, #ffa500, #ff8c00)",
-      calories: 280,
-      liked: "#3 Most liked",
-      rating: "93% (25)"
-    },
-    {
-      id: 10,
-      name: "Classic Vanilla Dream",
-      price: 7.90,
-      category: "Solo Delight",
-      description: "Sometimes simple is best. Our Classic Vanilla Dream features premium Madagascar vanilla cream in a perfectly fluffy donut.",
-      image: "🤍",
-      gradient: "linear-gradient(135deg, #fff5ee, #ffe4b5)",
-      calories: 240,
-      liked: "#10 Most liked",
-      rating: "87% (14)"
-    },
-    {
-      id: 11,
-      name: "Birthday Celebration Box",
-      price: 79.90,
-      category: "Party Box",
-      description: "Perfect for birthday parties! 18 colorful donuts with rainbow sprinkles, chocolate drizzle, and vanilla glaze. Guaranteed to bring smiles!",
-      image: "🎂🎈",
-      badge: "POPULAR",
-      badgeClass: "popular",
-      gradient: "linear-gradient(135deg, #ff1493, #ff69b4)",
-      calories: 300,
-      liked: "#11 Most liked",
-      rating: "91% (20)"
-    },
-    {
-      id: 12,
-      name: "Office Meeting Box",
-      price: 69.90,
-      category: "Party Box",
-      description: "Ideal for office meetings and events! 15 assorted donuts including classic glazed, chocolate, and specialty flavors. Perfect for sharing!",
-      image: "💼☕",
-      gradient: "linear-gradient(135deg, #4169e1, #6495ed)",
-      calories: 270,
-      liked: "#12 Most liked",
-      rating: "89% (16)"
-    }
-  ];
-  
-  // Save default products to localStorage
-  saveProducts(defaultProducts);
-  return defaultProducts;
-}
-
-function saveProducts(products) {
-  localStorage.setItem('products', JSON.stringify(products));
-}
-
-function getOrders() {
-  const stored = localStorage.getItem('orders');
-  return stored ? JSON.parse(stored) : [];
-}
-
-function saveOrders(orders) {
-  localStorage.setItem('orders', JSON.stringify(orders));
-}
+window.closeOrderModal = closeOrderModal;
 
 // ============ NOTIFICATIONS ============
 
