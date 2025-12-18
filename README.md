@@ -109,4 +109,3 @@ For questions or suggestions about this project, please contact:
 **Made with 🍩 by the LukouHub Team**
 
 *Last Updated: December 2025*
-Pauland was here
