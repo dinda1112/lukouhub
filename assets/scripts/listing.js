@@ -46,14 +46,27 @@ async function loadProducts() {
         badgeHTML = `<span class="product-badge ${badgeClass}">${product.badge}</span>`;
       }
       
-      // Get product image/icon (use default emoji if empty)
-      const productIcon = product.image || '🍩';
+      // Get product image - check if URL or emoji
+      let imageHTML = '';
+      if (product.image && product.image.trim()) {
+        // Check if it's a URL (contains http, /, or .)
+        if (product.image.includes('http') || product.image.includes('/') || product.image.includes('.')) {
+          // It's an image URL
+          imageHTML = `<img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">`;
+        } else {
+          // It's an emoji or text
+          imageHTML = product.image;
+        }
+      } else {
+        // No image provided, use default emoji
+        imageHTML = '🍩';
+      }
       
       return `
         <div class="product-card" data-product-id="${product.id}">
-          <div class="product-image" style="background: ${gradient};">
+          <div class="product-image" style="background: ${gradient}; display: flex; align-items: center; justify-content: center; overflow: hidden;">
             ${badgeHTML}
-            ${productIcon}
+            ${imageHTML}
           </div>
           <div class="product-info">
             <div class="product-category">${product.category}</div>
