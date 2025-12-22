@@ -1,67 +1,82 @@
 /* ============================================
-   LISTING PAGE - FIREBASE VERSION
-   Dynamically loads products from Firebase
+   LISTING PAGE - FIREBASE VERSION (FINAL FIX)
+   Includes Search and Filter Logic
    ============================================ */
 
 // Import Firebase functions
 import { db, collection, getDocs } from './firebase-config.js';
 
-// Load and display products from Firebase
+// GLOBAL VARIABLE: Store all products here so we can filter them later
+let allProductsData = [];
+
+// 1. MAIN FUNCTION: Fetch Data Once
 async function loadProducts() {
   try {
     console.log('Loading products from Firebase...');
     
     const productsSnapshot = await getDocs(collection(db, 'products'));
-    const products = productsSnapshot.docs.map(doc => ({
+    allProductsData = productsSnapshot.docs.map(doc => ({
       firestoreId: doc.id,
       ...doc.data()
     }));
     
-    console.log(`Loaded ${products.length} products`);
+    console.log(`Loaded ${allProductsData.length} products`);
     
+    // Default Sort by ID
+    allProductsData.sort((a, b) => a.id - b.id);
+
+    // Initial Render (Show All)
+    renderProducts(allProductsData);
+
+    // ACTIVATE SEARCH & FILTER features
+    setupSearchAndFilter();
+    
+  } catch (error) {
+    console.error('Error loading products:', error);
+    showErrorState();
+  }
+}
+
+// 2. RENDER FUNCTION: Displays whatever list you give it
+function renderProducts(productsToDisplay) {
     const productsGrid = document.getElementById('products-grid');
-    
-    if (products.length === 0) {
+
+    // Handle Empty Results
+    if (productsToDisplay.length === 0) {
       productsGrid.innerHTML = `
         <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
-          <h3 style="color: #666; margin-bottom: 15px;">No products found</h3>
-          <p style="color: #999;">Products will appear here once added by admin.</p>
+          <h3 style="color: #666; margin-bottom: 15px;">No donuts found</h3>
+          <p style="color: #999;">Try adjusting your search or filter.</p>
         </div>
       `;
       return;
     }
-    
-    // Sort products by ID
-    products.sort((a, b) => a.id - b.id);
-    
-    // Display products
-    productsGrid.innerHTML = products.map(product => {
-      // Get gradient (use default if not provided)
+
+    // Generate HTML
+    productsGrid.innerHTML = productsToDisplay.map(product => {
+      // Logic for Gradient
       const gradient = product.gradient || 'linear-gradient(135deg, #f4a460, #e08040)';
       
-      // Get badge HTML
+      // Logic for Badge
       let badgeHTML = '';
       if (product.badge) {
         const badgeClass = product.badgeClass || product.badge.toLowerCase();
         badgeHTML = `<span class="product-badge ${badgeClass}">${product.badge}</span>`;
       }
       
-      // Get product image - check if URL or emoji
+      // Logic for Image (URL vs Emoji)
       let imageHTML = '';
       if (product.image && product.image.trim()) {
-        // Check if it's a URL (contains http, /, or .)
         if (product.image.includes('http') || product.image.includes('/') || product.image.includes('.')) {
-          // It's an image URL
           imageHTML = `<img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">`;
         } else {
-          // It's an emoji or text
-          imageHTML = product.image;
+          imageHTML = product.image; // It is an emoji
         }
       } else {
-        // No image provided, use default emoji
         imageHTML = '🍩';
       }
       
+      // Return the Card HTML
       return `
         <div class="product-card" data-product-id="${product.id}">
           <div class="product-image" style="background: ${gradient}; display: flex; align-items: center; justify-content: center; overflow: hidden;">
@@ -80,25 +95,65 @@ async function loadProducts() {
         </div>
       `;
     }).join('');
-    
-    console.log('Products displayed successfully');
-    
-  } catch (error) {
-    console.error('Error loading products:', error);
-    
+}
+
+// 3. LOGIC FUNCTION: Handles Search and Button Clicks
+function setupSearchAndFilter() {
+    // --- SEARCH LOGIC ---
+    const searchInput = document.getElementById('search-input');
+    if(searchInput) {
+        searchInput.addEventListener('keyup', (e) => {
+            const searchString = e.target.value.toLowerCase();
+            
+            // Filter the global data
+            const filtered = allProductsData.filter(product => {
+                return product.name.toLowerCase().includes(searchString) || 
+                       product.description.toLowerCase().includes(searchString);
+            });
+
+            // Re-draw the screen
+            renderProducts(filtered);
+        });
+    }
+
+    // --- FILTER BUTTON LOGIC ---
+    const buttons = document.querySelectorAll('.filter-btn');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // 1. Remove 'active' class from all buttons
+            buttons.forEach(b => b.classList.remove('active'));
+            // 2. Add 'active' class to clicked button
+            btn.classList.add('active');
+
+            // 3. Get category
+            const categoryToFilter = btn.getAttribute('data-category');
+
+            // 4. Filter Data
+            if (categoryToFilter === 'all') {
+                renderProducts(allProductsData);
+            } else {
+                // Check if product category CONTAINS the filter word (Fix is here)
+                const filtered = allProductsData.filter(product => 
+                    product.category && product.category.toLowerCase().includes(categoryToFilter.toLowerCase())
+                );
+                renderProducts(filtered);
+            }
+        });
+    });
+}
+
+// Helper: Show Error if Firebase fails
+function showErrorState() {
     const productsGrid = document.getElementById('products-grid');
     productsGrid.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
         <h3 style="color: #e63946; margin-bottom: 15px;">Error Loading Products</h3>
-        <p style="color: #999;">Please check your internet connection and try again.</p>
-        <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #f4a460; color: white; border: none; border-radius: 8px; cursor: pointer;">Retry</button>
+        <button onclick="location.reload()" style="padding: 10px 20px; background: #f4a460; color: white; border: none; border-radius: 8px; cursor: pointer;">Retry</button>
       </div>
     `;
-  }
 }
 
-// Load products when page loads
+// Start everything when page loads
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Listing page loaded');
   loadProducts();
 });
