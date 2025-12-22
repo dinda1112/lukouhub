@@ -9,10 +9,8 @@
 </head>
 <body>
 
-  <!-- NOTIFICATION -->
   <div class="notification" id="notification"></div>
 
-  <!-- NAVIGATION -->
   <nav class="navbar">
     <div class="nav-container">
       <a href="index.html" class="logo">Lukou<span>Hub</span></a>
@@ -31,13 +29,11 @@
     </div>
   </nav>
 
-  <!-- PAGE HEADER -->
   <section class="page-header">
     <h1>Our <span>Menu</span></h1>
     <p>Handcrafted Greek donuts & bomboloni made fresh daily</p>
   </section>
 
-  <!-- FILTERS -->
   <section class="filters">
     <div class="filters-container">
       <div class="filter-group">
@@ -48,22 +44,19 @@
         <button class="filter-btn" data-category="party">Party</button>
       </div>
       <div class="search-box">
-        <input type="text" placeholder="🔍 Search for donuts...">
+        <input type="text" id="search-input" placeholder="🔍 Search for donuts...">
       </div>
     </div>
   </section>
 
-  <!-- PRODUCTS -->
   <section class="products-section">
     <div class="products-grid" id="products-grid">
-      <!-- Products will be loaded here dynamically from Firebase -->
       <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
         <p style="color: #999;">Loading products...</p>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-brand">
@@ -103,21 +96,17 @@
     </div>
   </footer>
 
-  <!-- PRODUCT DETAIL MODAL -->
   <div class="product-modal" id="product-modal">
     <div class="modal-overlay" onclick="closeProductModal()"></div>
     <div class="modal-content">
-      <!-- Close Button -->
       <button class="modal-close" onclick="closeProductModal()">✕</button>
       
       <div class="modal-body">
-        <!-- Product Image -->
         <div class="modal-image-section">
           <div class="modal-product-image" id="modal-product-image">🍩</div>
           <div class="modal-badges" id="modal-badges"></div>
         </div>
 
-        <!-- Product Info -->
         <div class="modal-info-section">
           <div class="modal-header">
             <div>
@@ -136,7 +125,6 @@
             Deliciously tasty and perfectly crispy.
           </div>
 
-          <!-- Quantity Selector -->
           <div class="modal-quantity-section">
             <label>Quantity</label>
             <div class="modal-quantity-controls">
@@ -146,7 +134,6 @@
             </div>
           </div>
 
-          <!-- Add to Cart Button -->
           <button class="modal-add-cart-btn" id="modal-add-cart-btn" onclick="modalAddToCart()">
             Add to cart - <span id="modal-total-price">RM 8.90</span>
           </button>
@@ -155,7 +142,6 @@
     </div>
   </div>
 
-  <!-- Load scripts -->
   <script src="assets/scripts/main.js"></script>
   <script type="module" src="assets/scripts/listing.js"></script>
   <script type="module" src="assets/scripts/product-modal.js"></script>
