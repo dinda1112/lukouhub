@@ -1,12 +1,14 @@
 /* ============================================
-   LISTING PAGE - FIREBASE VERSION (FINAL FIX)
-   Includes Search and Filter Logic
+   LISTING PAGE - FIREBASE VERSION (STRICT START-WITH)
+   1. Search STRICTLY checks the first letter(s) of the NAME.
+   2. "n" will show "Nutella", but NOT "Vanilla".
+   3. Combined with Category buttons.
    ============================================ */
 
 // Import Firebase functions
 import { db, collection, getDocs } from './firebase-config.js';
 
-// GLOBAL VARIABLE: Store all products here so we can filter them later
+// GLOBAL VARIABLE: Store all products here
 let allProductsData = [];
 
 // 1. MAIN FUNCTION: Fetch Data Once
@@ -20,15 +22,13 @@ async function loadProducts() {
       ...doc.data()
     }));
     
-    console.log(`Loaded ${allProductsData.length} products`);
-    
     // Default Sort by ID
     allProductsData.sort((a, b) => a.id - b.id);
 
-    // Initial Render (Show All)
+    // Initial Render
     renderProducts(allProductsData);
 
-    // ACTIVATE SEARCH & FILTER features
+    // ACTIVATE SEARCH & FILTER
     setupSearchAndFilter();
     
   } catch (error) {
@@ -37,46 +37,40 @@ async function loadProducts() {
   }
 }
 
-// 2. RENDER FUNCTION: Displays whatever list you give it
+// 2. RENDER FUNCTION
 function renderProducts(productsToDisplay) {
     const productsGrid = document.getElementById('products-grid');
 
-    // Handle Empty Results
     if (productsToDisplay.length === 0) {
       productsGrid.innerHTML = `
         <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
           <h3 style="color: #666; margin-bottom: 15px;">No donuts found</h3>
-          <p style="color: #999;">Try adjusting your search or filter.</p>
+          <p style="color: #999;">Try checking your spelling.</p>
         </div>
       `;
       return;
     }
 
-    // Generate HTML
     productsGrid.innerHTML = productsToDisplay.map(product => {
-      // Logic for Gradient
       const gradient = product.gradient || 'linear-gradient(135deg, #f4a460, #e08040)';
       
-      // Logic for Badge
       let badgeHTML = '';
       if (product.badge) {
         const badgeClass = product.badgeClass || product.badge.toLowerCase();
         badgeHTML = `<span class="product-badge ${badgeClass}">${product.badge}</span>`;
       }
       
-      // Logic for Image (URL vs Emoji)
       let imageHTML = '';
       if (product.image && product.image.trim()) {
         if (product.image.includes('http') || product.image.includes('/') || product.image.includes('.')) {
           imageHTML = `<img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">`;
         } else {
-          imageHTML = product.image; // It is an emoji
+          imageHTML = product.image; 
         }
       } else {
         imageHTML = '🍩';
       }
       
-      // Return the Card HTML
       return `
         <div class="product-card" data-product-id="${product.id}">
           <div class="product-image" style="background: ${gradient}; display: flex; align-items: center; justify-content: center; overflow: hidden;">
@@ -97,63 +91,58 @@ function renderProducts(productsToDisplay) {
     }).join('');
 }
 
-// 3. LOGIC FUNCTION: Handles Search and Button Clicks
+// 3. SETUP LISTENERS
 function setupSearchAndFilter() {
-    // --- SEARCH LOGIC ---
     const searchInput = document.getElementById('search-input');
-    if(searchInput) {
-        searchInput.addEventListener('keyup', (e) => {
-            const searchString = e.target.value.toLowerCase();
-            
-            // Filter the global data
-            const filtered = allProductsData.filter(product => {
-                return product.name.toLowerCase().includes(searchString) || 
-                       product.description.toLowerCase().includes(searchString);
-            });
+    const buttons = document.querySelectorAll('.filter-btn');
 
-            // Re-draw the screen
-            renderProducts(filtered);
-        });
+    if(searchInput) {
+        searchInput.addEventListener('input', runCombinedFilter);
     }
 
-    // --- FILTER BUTTON LOGIC ---
-    const buttons = document.querySelectorAll('.filter-btn');
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
-            // 1. Remove 'active' class from all buttons
             buttons.forEach(b => b.classList.remove('active'));
-            // 2. Add 'active' class to clicked button
             btn.classList.add('active');
-
-            // 3. Get category
-            const categoryToFilter = btn.getAttribute('data-category');
-
-            // 4. Filter Data
-            if (categoryToFilter === 'all') {
-                renderProducts(allProductsData);
-            } else {
-                // Check if product category CONTAINS the filter word (Fix is here)
-                const filtered = allProductsData.filter(product => 
-                    product.category && product.category.toLowerCase().includes(categoryToFilter.toLowerCase())
-                );
-                renderProducts(filtered);
-            }
+            runCombinedFilter();
         });
     });
 }
 
-// Helper: Show Error if Firebase fails
-function showErrorState() {
-    const productsGrid = document.getElementById('products-grid');
-    productsGrid.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
-        <h3 style="color: #e63946; margin-bottom: 15px;">Error Loading Products</h3>
-        <button onclick="location.reload()" style="padding: 10px 20px; background: #f4a460; color: white; border: none; border-radius: 8px; cursor: pointer;">Retry</button>
-      </div>
-    `;
+// 4. MASTER FILTER LOGIC (STRICT START-WITH)
+function runCombinedFilter() {
+    const searchInput = document.getElementById('search-input');
+    const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+    const activeBtn = document.querySelector('.filter-btn.active');
+    const activeCategory = activeBtn ? activeBtn.getAttribute('data-category') : 'all';
+
+    let filtered = allProductsData.filter(product => {
+        // A. Category Check
+        let matchesCategory = false;
+        if (activeCategory === 'all') {
+            matchesCategory = true;
+        } else {
+            matchesCategory = product.category && 
+                              product.category.toLowerCase().includes(activeCategory.toLowerCase());
+        }
+
+        // B. Search Check (STRICT: STARTS WITH ONLY)
+        let matchesSearch = true;
+        if (searchTerm) {
+             // CHANGE: Used startsWith() instead of includes()
+             matchesSearch = product.name.toLowerCase().startsWith(searchTerm);
+        }
+
+        return matchesCategory && matchesSearch;
+    });
+
+    renderProducts(filtered);
 }
 
-// Start everything when page loads
-document.addEventListener('DOMContentLoaded', function() {
-  loadProducts();
-});
+function showErrorState() {
+    const productsGrid = document.getElementById('products-grid');
+    productsGrid.innerHTML = `<h3 style="text-align:center; padding:40px;">Error Loading Data</h3>`;
+}
+
+document.addEventListener('DOMContentLoaded', loadProducts);
