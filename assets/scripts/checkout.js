@@ -15,7 +15,7 @@ let total = 0;
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
   loadCartItems();
-  updateOrderSummary();
+  updateOrderSummary(); // Initial summary with delivery selected
   
   // Add event listeners
   document.getElementById('place-order-btn').addEventListener('click', placeOrder);
@@ -215,9 +215,9 @@ async function placeOrder(event) {
     localStorage.removeItem('cart');
     localStorage.removeItem('cartDiscount');
     
-    // Redirect to order confirmation page
+    // Redirect to order success page
     setTimeout(() => {
-      window.location.href = `order-confirmation.html?orderId=${orderId}`;
+      window.location.href = `order-success.html?orderId=${orderId}`;
     }, 1500);
     
   } catch (error) {
