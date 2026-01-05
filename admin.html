@@ -3,258 +3,283 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - LukouHub</title>
+  <title>LukouHub - Borneo's First Greek Donut</title>
   <link rel="stylesheet" href="assets/styles/main.css">
-  <link rel="stylesheet" href="assets/styles/admin.css">
 </head>
 <body>
 
-  <!-- NOTIFICATION -->
-  <div class="notification" id="notification"></div>
-
-  <!-- LOGIN SCREEN -->
-  <div class="admin-login" id="admin-login">
-    <div class="login-container">
-      <div class="login-header">
-        <h1>Admin Login</h1>
-        <p>LukouHub Admin Panel</p>
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">Lukou<span>Hub</span></a>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="listing.html">Menu</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#locations">Locations</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="cart.html" class="cart-btn">
+          🛒 Cart <span class="cart-count">0</span>
+        </a>
       </div>
-      <form class="login-form" onsubmit="adminLogin(event)">
-        <div class="form-group">
-          <label>Username</label>
-          <input type="text" id="admin-username" placeholder="Enter username" required>
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="admin-password" placeholder="Enter password" required>
-        </div>
-        <button type="submit" class="btn-login">Login</button>
-      </form>
     </div>
-  </div>
+  </nav>
 
-  <!-- ADMIN PANEL (Hidden until login) -->
-  <div class="admin-panel" id="admin-panel" style="display: none;">
+  <!-- HERO SECTION WITH VIDEO BACKGROUND -->
+  <section class="hero">
+    <!-- Video Background -->
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="assets/video/hero-video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
     
-    <!-- ADMIN HEADER -->
-    <header class="admin-header">
-      <div class="admin-nav">
-        <h2>LukouHub Admin</h2>
-        <div class="admin-actions">
-          <span class="admin-user">Admin</span>
-          <button class="btn-logout" onclick="adminLogout()">Logout</button>
+    <!-- Dark Orangey Overlay -->
+    <div class="hero-overlay"></div>
+    
+    <div class="hero-container">
+      <div class="hero-content">
+        <p class="hero-tagline">🇬🇷 Borneo's First Greek Donut</p>
+        <h1>Handcrafted <span>Bomboloni</span> & Greek Donuts</h1>
+        <p>Experience authentic Greek donuts made with love and the finest ingredients. From our kitchen in Kuching to your sweet moments!</p>
+        <div class="hero-buttons">
+          <a href="listing.html" class="btn-primary">Order Now 🍩</a>
+          <a href="#packages" class="btn-secondary">View Packages</a>
         </div>
       </div>
-    </header>
+      <div class="hero-image">
+        <div class="hero-card">
+          <div class="hero-card-emoji">
+            <img src="assets/images/bomboloni-donut.jpg" alt="Bomboloni Donut" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+          </div>
+          <h3>Made Fresh Daily</h3>
+          <p>Authentic Greek recipe with Malaysian twist</p>
+          <div class="hero-badge">🎉 Order on GrabFood!</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- ADMIN CONTENT -->
-    <div class="admin-content">
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="features-container">
+      <div class="feature-card">
+        <div class="feature-icon">🍩</div>
+        <h3>Authentic Recipe</h3>
+        <p>Traditional Greek loukoumades</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💝</div>
+        <h3>Made with Love</h3>
+        <p>Handcrafted fresh daily</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌿</div>
+        <h3>Quality Ingredients</h3>
+        <p>Premium local ingredients</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚗</div>
+        <h3>Easy Pickup</h3>
+        <p>2 locations in Kuching</p>
+      </div>
+    </div>
+  </section>
+
+ <!-- PACKAGES -->
+  <section class="categories" id="packages">
+    <div class="section-header">
+      <h2>Choose Your <span>Package</span></h2>
+      <p>Perfect for any occasion - from solo treats to party celebrations!</p>
+    </div>
+    <div class="categories-grid">
+      <a href="listing.html?cat=solo" class="category-card">
+        <div class="category-emoji">
+          <img src="assets/images/solo delight.jpg" alt="Solo Delight" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+        </div>
+        <h3>Solo Delight</h3>
+        <p>Perfect for personal treats</p>
+        <span class="category-price">From RM 8</span>
+      </a>
+      <a href="listing.html?cat=couple" class="category-card">
+        <div class="category-emoji">
+          <img src="assets/images/couple set.jpg" alt="Couple Set" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+        </div>
+        <h3>Couple Set</h3>
+        <p>Share sweet moments together</p>
+        <span class="category-price">From RM 15</span>
+      </a>
+      <a href="listing.html?cat=family" class="category-card">
+        <div class="category-emoji">
+          <img src="assets/images/family box.jpg" alt="Family Pack" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+        </div>
+        <h3>Family Pack</h3>
+        <p>Joy for the whole family</p>
+        <span class="category-price">From RM 35</span>
+      </a>
+      <a href="listing.html?cat=party" class="category-card">
+        <div class="category-emoji">
+          <img src="assets/images/party box.jpg" alt="Party Box" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+        </div>
+        <h3>Party Box</h3>
+        <p>Perfect for events & gatherings</p>
+        <span class="category-price">From RM 60</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- SIGNATURE FLAVOURS -->
+  <section class="products">
+    <div class="section-header">
+      <h2>Signature <span>Flavours</span></h2>
+      <p>Our most loved bomboloni creations</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-image">
+          <span class="product-badge">BESTSELLER</span>
+          <img src="assets/images/nutella-banana.jpg" alt="Nutella Banana Bomboloni">
+        </div>
+        <div class="product-info">
+          <h3>Nutella Banana</h3>
+          <p class="description">Rich Nutella filling with fresh banana slices</p>
+          <div class="product-price">
+            <span class="price">RM 8.90</span>
+            <button class="add-cart">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image">
+          <span class="product-badge">NEW</span>
+          <img src="assets/images/berry-matcha.jpg" alt="Berry Matcha Bomboloni">
+        </div>
+        <div class="product-info">
+          <h3>Berry Matcha</h3>
+          <p class="description">Premium matcha cream with mixed berries</p>
+          <div class="product-price">
+            <span class="price">RM 9.90</span>
+            <button class="add-cart">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image">
+          <img src="assets/images/cookie-oclock.jpg" alt="Cookie O'Clock Bomboloni">
+        </div>
+        <div class="product-info">
+          <h3>Cookie O'Clock</h3>
+          <p class="description">Cookies & cream heaven in every bite</p>
+          <div class="product-price">
+            <span class="price">RM 8.90</span>
+            <button class="add-cart">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="view-all">
+      <a href="listing.html" class="btn-primary">View Full Menu →</a>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+<section class="about" id="about">
+  <div class="about-container">
+    <div class="about-content">
+      <h2>Our <span>Story</span></h2>
+      <p>LukouHub started with a simple idea after discovering Greek donuts during a trip to Australia. We wanted to bring this delightful experience to Borneo!</p>
+      <p>Since 2022, we've been crafting authentic Greek donuts and bomboloni with love, using quality ingredients to create memorable sweet moments for our community in Kuching.</p>
+      <p>From our humble beginnings at Gala City to now operating two outlets, we're grateful for every customer who has been part of our journey.</p>
       
-      <!-- SIDEBAR -->
-      <aside class="admin-sidebar">
-        <nav class="sidebar-nav">
-          <button class="nav-btn active" onclick="showSection('dashboard')">
-            Dashboard
-          </button>
-          <button class="nav-btn" onclick="showSection('products')">
-            Products
-          </button>
-          <button class="nav-btn" onclick="showSection('orders')">
-            Orders
-          </button>
-        </nav>
-        <div class="sidebar-footer">
-          <a href="index.html" class="btn-view-site">View Site</a>
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-number">2+</div>
+          <div class="stat-label">Years</div>
         </div>
-      </aside>
-
-      <!-- MAIN CONTENT -->
-      <main class="admin-main">
-        
-        <!-- DASHBOARD SECTION -->
-        <section class="admin-section active" id="section-dashboard">
-          <h2>Dashboard Overview</h2>
-          
-          <div class="stats-simple">
-            <div class="stat-item">
-              <h3 id="stat-products">0</h3>
-              <p>Total Products</p>
-            </div>
-
-            <div class="stat-item">
-              <h3 id="stat-orders">0</h3>
-              <p>Total Orders</p>
-            </div>
-
-            <div class="stat-item">
-              <h3 id="stat-revenue">RM 0.00</h3>
-              <p>Total Revenue</p>
-            </div>
-
-            <div class="stat-item">
-              <h3 id="stat-pending">0</h3>
-              <p>Pending Orders</p>
-            </div>
-          </div>
-
-          <div class="recent-orders">
-            <h3>Recent Orders</h3>
-            <div id="recent-orders-list">
-              <p class="no-data">No orders yet</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- PRODUCTS SECTION -->
-        <section class="admin-section" id="section-products">
-          <div class="section-header">
-            <h2>Products Management</h2>
-            <button class="btn-add" onclick="showAddProductForm()">+ Add Product</button>
-          </div>
-
-          <!-- ADD/EDIT PRODUCT FORM -->
-          <div class="product-form-container" id="product-form-container" style="display: none;">
-            <h3 id="form-title">Add New Product</h3>
-            <form class="product-form" id="product-form" onsubmit="saveProduct(event)">
-              <input type="hidden" id="edit-product-id">
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Product Name *</label>
-                  <input type="text" id="product-name" placeholder="e.g., Nutella Banana" required>
-                </div>
-                <div class="form-group">
-                  <label>Price (RM) *</label>
-                  <input type="number" id="product-price" placeholder="0.00" step="0.01" min="0" required>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Category *</label>
-                  <select id="product-category" required>
-                    <option value="">Select category</option>
-                    <option value="Solo Delight">Solo Delight</option>
-                    <option value="Couple Set">Couple Set</option>
-                    <option value="Family Pack">Family Pack</option>
-                    <option value="Party Box">Party Box</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Image URL</label>
-                  <input type="text" id="product-image" placeholder="https://example.com/image.jpg">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Calories</label>
-                  <input type="number" id="product-calories" placeholder="250" min="0">
-                </div>
-                <div class="form-group">
-                  <label>Badge (optional)</label>
-                  <select id="product-badge">
-                    <option value="">None</option>
-                    <option value="BESTSELLER">BESTSELLER</option>
-                    <option value="NEW">NEW</option>
-                    <option value="POPULAR">POPULAR</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Description *</label>
-                <textarea id="product-description" rows="3" placeholder="Describe your product..." required></textarea>
-              </div>
-
-              <div class="form-actions">
-                <button type="submit" class="btn-save">Save Product</button>
-                <button type="button" class="btn-cancel" onclick="cancelProductForm()">Cancel</button>
-              </div>
-            </form>
-          </div>
-
-          <!-- PRODUCTS TABLE -->
-          <div class="products-table-container">
-            <table class="products-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Product</th>
-                  <th>Category</th>
-                  <th>Price</th>
-                  <th>Badge</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="products-table-body">
-                <tr>
-                  <td colspan="6" class="no-data">Loading products...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <!-- ORDERS SECTION -->
-        <section class="admin-section" id="section-orders">
-          <div class="section-header">
-            <h2>Orders Management</h2>
-            <div class="filter-buttons">
-              <button class="filter-btn active" onclick="filterOrders('all')">All</button>
-              <button class="filter-btn" onclick="filterOrders('pending')">Pending</button>
-              <button class="filter-btn" onclick="filterOrders('preparing')">Preparing</button>
-              <button class="filter-btn" onclick="filterOrders('ready')">Ready</button>
-              <button class="filter-btn" onclick="filterOrders('completed')">Completed</button>
-            </div>
-          </div>
-
-          <!-- ORDERS TABLE -->
-          <div class="orders-table-container">
-            <table class="orders-table">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Date</th>
-                  <th>Customer</th>
-                  <th>Items</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="orders-table-body">
-                <tr>
-                  <td colspan="7" class="no-data">Loading orders...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-      </main>
-    </div>
-  </div>
-
-  <!-- ORDER DETAIL MODAL -->
-  <div class="order-modal" id="order-modal">
-    <div class="modal-overlay" onclick="closeOrderModal()"></div>
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Order Details</h2>
-        <button class="modal-close" onclick="closeOrderModal()">✕</button>
+        <div class="stat">
+          <div class="stat-number">2</div>
+          <div class="stat-label">Locations</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">1000+</div>
+          <div class="stat-label">Happy Customers</div>
+        </div>
       </div>
-      <div class="modal-body" id="order-modal-body">
-        <!-- Order details will be loaded here -->
+    </div>
+    <div class="about-image">
+      <div class="about-card">
+        <div class="about-card-emoji">
+          <img src="assets/images/target-audience.jpg" alt="Our Mission" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+        </div>
+        <h3>Our Mission</h3>
+        <p>To bring joy through authentic Greek donuts</p>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- Firebase Config (MUST BE LOADED FIRST) -->
-  <script type="module" src="assets/scripts/firebase-config.js"></script>
-  
-  <!-- Admin Script (MUST BE TYPE="module" to use Firebase) -->
-  <script type="module" src="assets/scripts/admin.js"></script>
+  <!-- LOCATIONS -->
+  <section class="locations" id="locations">
+    <div class="section-header">
+      <h2>Visit <span>Us</span></h2>
+      <p>Find us at these convenient locations in Kuching</p>
+    </div>
+    <div class="locations-grid">
+      <div class="location-card">
+        <div class="location-card-emoji">📍</div>
+        <h3>Gala City Mall</h3>
+        <p>Ground Floor, Food Court</p>
+      </div>
+      <div class="location-card">
+        <div class="location-card-emoji">📍</div>
+        <h3>Vivacity Megamall</h3>
+        <p>Level 1, Near Entrance A</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="#" class="logo">Lukou<span>Hub</span></a>
+        <p>Borneo's first Greek donut shop, bringing authentic loukoumades to Kuching since 2022.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="listing.html">Menu</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#locations">Locations</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">WhatsApp</a></li>
+          <li><a href="#">GrabFood</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 LukouHub. All rights reserved. Made with ❤️ in Kuching, Sarawak.</p>
+    </div>
+  </footer>
+
+  <script src="assets/scripts/main.js"></script>
 
 </body>
 </html>
