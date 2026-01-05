@@ -178,33 +178,31 @@ a {
   font-size: 16px;
 }
 
-/* ============ HERO SECTION (Index Page) - WITH VIDEO BACKGROUND ============ */
+/* ============ HERO SECTION - OPTIMIZED FOR 16:9 VIDEO ============ */
 .hero {
   position: relative;
-  min-height: 650px;
-  height: 100vh;
-  max-height: 850px;
+  min-height: 500px;
+  height: 60vh;               /* 60% of viewport height */
+  max-height: 700px;
   display: flex;
   align-items: center;
   padding: 60px 5%;
   overflow: hidden;
 }
 
-/* Video Background */
+/* Video Background - 16:9 Optimized */
 .hero-video {
   position: absolute;
   top: 50%;
   left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   transform: translate(-50%, -50%);
   z-index: 0;
-  object-fit: cover;
+  object-fit: cover;          /* Fills space, crops if needed */
 }
 
-/* Dark Orangey Overlay - Creates the warm dark effect */
+/* Dark Orangey Overlay */
 .hero-overlay {
   position: absolute;
   top: 0;
@@ -213,54 +211,16 @@ a {
   height: 100%;
   background: linear-gradient(
     135deg, 
-    rgba(44, 24, 16, 0.85) 0%,      /* Dark brown */
-    rgba(139, 69, 19, 0.75) 30%,    /* Saddle brown */
-    rgba(244, 164, 96, 0.65) 60%,   /* Sandy brown */
-    rgba(74, 44, 42, 0.80) 100%     /* Dark reddish brown */
+    rgba(44, 24, 16, 0.85) 0%,
+    rgba(139, 69, 19, 0.75) 30%,
+    rgba(244, 164, 96, 0.65) 60%,
+    rgba(74, 44, 42, 0.80) 100%
   );
   z-index: 1;
   backdrop-filter: blur(1px);
 }
 
-/* Alternative Orangey Overlays (uncomment the one you like) */
-
-/* Option 1: Warmer Orange */
-/*
-.hero-overlay {
-  background: linear-gradient(
-    135deg, 
-    rgba(139, 69, 19, 0.80) 0%,
-    rgba(244, 164, 96, 0.70) 50%,
-    rgba(205, 92, 92, 0.75) 100%
-  );
-}
-*/
-
-/* Option 2: Deep Orange-Brown */
-/*
-.hero-overlay {
-  background: linear-gradient(
-    135deg, 
-    rgba(74, 44, 42, 0.90) 0%,
-    rgba(139, 69, 19, 0.80) 50%,
-    rgba(244, 164, 96, 0.65) 100%
-  );
-}
-*/
-
-/* Option 3: Lighter Orangey */
-/*
-.hero-overlay {
-  background: linear-gradient(
-    135deg, 
-    rgba(244, 164, 96, 0.65) 0%,
-    rgba(222, 184, 135, 0.60) 50%,
-    rgba(205, 133, 63, 0.70) 100%
-  );
-}
-*/
-
-/* Container and Content - now with higher z-index */
+/* Container and Content */
 .hero-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -372,10 +332,10 @@ a {
   50% { transform: scale(1.05); }
 }
 
-/* Mobile Responsive for Video Hero */
+/* Mobile Responsive */
 @media (max-width: 992px) {
   .hero {
-    min-height: 550px;
+    min-height: 450px;
     height: auto;
   }
   
@@ -399,8 +359,8 @@ a {
 
 @media (max-width: 768px) {
   .hero {
-    min-height: 500px;
-    max-height: 700px;
+    min-height: 400px;
+    max-height: 600px;
   }
   
   .hero-content h1 { 
@@ -408,7 +368,6 @@ a {
   }
   
   .hero-video {
-    /* On mobile, ensure video covers properly */
     min-width: 100%;
     min-height: 100%;
   }
@@ -416,7 +375,8 @@ a {
 
 @media (max-width: 576px) {
   .hero {
-    min-height: 450px;
+    min-height: 350px;
+    height: 500px;
   }
   
   .hero-content h1 {
