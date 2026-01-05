@@ -69,7 +69,7 @@
 */
 
 /* Option 3: Lighter Orangey */
-/*
+
 .hero-overlay {
   background: linear-gradient(
     135deg, 
@@ -78,7 +78,7 @@
     rgba(205, 133, 63, 0.70) 100%
   );
 }
-*/
+
 
 /* Container and Content - now with higher z-index */
 .hero-container {
