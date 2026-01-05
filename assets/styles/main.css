@@ -39,11 +39,22 @@ a {
   align-items: center;
 }
 
-.logo {
-  font-size: 28px;
-  font-weight: bold;
-  color: white;
-  letter-spacing: 1px;
+./* Logo Image in Navigation */
+.logo-img {
+  height: 45px;
+  width: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    height: 35px;
+  }
 }
 
 .logo span {
