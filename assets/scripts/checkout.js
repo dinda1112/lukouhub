@@ -18,7 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
   updateOrderSummary(); // Initial summary with delivery selected
   
   // Add event listeners
-  document.getElementById('place-order-btn').addEventListener('click', placeOrder);
+  const placeOrderBtn = document.getElementById('place-order-btn');
+  if(placeOrderBtn) {
+      placeOrderBtn.addEventListener('click', placeOrder);
+  }
   
   // Add delivery option listeners
   const deliveryOptions = document.querySelectorAll('input[name="delivery"]');
@@ -32,17 +35,22 @@ document.addEventListener('DOMContentLoaded', function() {
     option.addEventListener('click', function() {
       paymentOptions.forEach(opt => opt.classList.remove('active'));
       this.classList.add('active');
-      this.querySelector('input[type="radio"]').checked = true;
+      const radio = this.querySelector('input[type="radio"]');
+      if(radio) radio.checked = true;
     });
   });
   
-  // Add delivery type listeners
+  // Add delivery type listeners (if distinct from delivery options)
   const deliveryTypeOptions = document.querySelectorAll('.delivery-option');
   deliveryTypeOptions.forEach(option => {
     option.addEventListener('click', function() {
       deliveryTypeOptions.forEach(opt => opt.classList.remove('active'));
       this.classList.add('active');
-      this.querySelector('input[type="radio"]').checked = true;
+      const radio = this.querySelector('input[type="radio"]');
+      if(radio) radio.checked = true;
+      
+      // Trigger the toggle function manually since we are handling the click UI
+      toggleDeliveryFields(); 
     });
   });
 });
@@ -62,21 +70,43 @@ function loadCartItems() {
   
   // Display items
   const orderItemsContainer = document.getElementById('order-items');
-  orderItemsContainer.innerHTML = cartItems.map(item => `
+  
+  // --- FIX APPLIED HERE ---
+  orderItemsContainer.innerHTML = cartItems.map(item => {
+    // 1. Check if image is a file path
+    const isFilePath = item.image && (item.image.includes('/') || item.image.includes('.'));
+    
+    // 2. Create proper HTML for image vs emoji
+    let imageHTML;
+    if (isFilePath) {
+        imageHTML = `<img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">`;
+    } else {
+        imageHTML = item.image || '🍩';
+    }
+
+    // 3. Remove orange background if it's a real photo
+    const backgroundStyle = isFilePath ? 'style="background: transparent;"' : '';
+
+    return `
     <div class="order-item">
-      <div class="item-image">${item.image || '🍩'}</div>
+      <div class="item-image" ${backgroundStyle}>${imageHTML}</div>
       <div class="item-details">
         <div class="item-name">${item.name}</div>
         <div class="item-quantity">Qty: ${item.quantity}</div>
       </div>
       <div class="item-price">RM ${(item.price * item.quantity).toFixed(2)}</div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 // Toggle delivery address fields
 window.toggleDeliveryFields = function() {
-  const deliveryOption = document.querySelector('input[name="delivery"]:checked').value;
+  // Safe check for the element before accessing value
+  const checkedOption = document.querySelector('input[name="delivery"]:checked');
+  if(!checkedOption) return;
+
+  const deliveryOption = checkedOption.value;
   const addressSection = document.getElementById('delivery-address-section');
   const addressInputs = addressSection.querySelectorAll('input, select');
   
@@ -105,23 +135,33 @@ function updateOrderSummary() {
   subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   
   // Calculate delivery fee
-  const deliveryOption = document.querySelector('input[name="delivery"]:checked').value;
+  const checkedOption = document.querySelector('input[name="delivery"]:checked');
+  const deliveryOption = checkedOption ? checkedOption.value : 'pickup';
+  
   deliveryFee = deliveryOption === 'delivery' ? 5.00 : 0;
   
   // Get discount from cart (if any promo was applied)
-  discount = parseFloat(localStorage.getItem('cartDiscount') || '0');
+  discount = parseFloat(localStorage.getItem('discount') || '0'); // Changed 'cartDiscount' to 'discount' to match main.js
   
   // Calculate total
   total = subtotal + deliveryFee - discount;
   
   // Update display
-  document.getElementById('summary-subtotal').textContent = `RM ${subtotal.toFixed(2)}`;
-  document.getElementById('summary-delivery').textContent = `RM ${deliveryFee.toFixed(2)}`;
-  document.getElementById('summary-total').textContent = `RM ${total.toFixed(2)}`;
+  const subtotalEl = document.getElementById('summary-subtotal');
+  const deliveryEl = document.getElementById('summary-delivery');
+  const totalEl = document.getElementById('summary-total');
+  const discountEl = document.getElementById('summary-discount');
+  const discountRow = document.getElementById('discount-row');
+
+  if(subtotalEl) subtotalEl.textContent = `RM ${subtotal.toFixed(2)}`;
+  if(deliveryEl) deliveryEl.textContent = `RM ${deliveryFee.toFixed(2)}`;
+  if(totalEl) totalEl.textContent = `RM ${total.toFixed(2)}`;
   
-  if (discount > 0) {
-    document.getElementById('discount-row').style.display = 'flex';
-    document.getElementById('summary-discount').textContent = `- RM ${discount.toFixed(2)}`;
+  if (discount > 0 && discountRow && discountEl) {
+    discountRow.style.display = 'flex';
+    discountEl.textContent = `- RM ${discount.toFixed(2)}`;
+  } else if (discountRow) {
+    discountRow.style.display = 'none';
   }
 }
 
@@ -213,9 +253,13 @@ async function placeOrder(event) {
     
     // Clear cart
     localStorage.removeItem('cart');
-    localStorage.removeItem('cartDiscount');
+    localStorage.removeItem('discount'); // Changed from cartDiscount to match logic
+    localStorage.removeItem('promoCode');
+    localStorage.removeItem('checkoutCart');
     
-    // Redirect to order success page
+    // Redirect to order confirmation/success page
+    // Note: User logic seems to have order-confirmation as a review page or success page. 
+    // Based on previous chats, redirecting to order-success.html seems safest.
     setTimeout(() => {
       window.location.href = `order-success.html?orderId=${orderId}`;
     }, 1500);
