@@ -4,14 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shopping Cart - LukouHub</title>
+  
   <link rel="stylesheet" href="assets/styles/main.css">
+  
+  <link rel="stylesheet" href="assets/styles/cart.css">
 </head>
 <body>
 
-  <!-- NOTIFICATION -->
   <div class="notification" id="notification"></div>
 
-  <!-- NAVIGATION -->
   <nav class="navbar">
     <div class="nav-container">
       <a href="index.html" class="logo">Lukou<span>Hub</span></a>
@@ -29,57 +30,61 @@
     </div>
   </nav>
 
-  <!-- PAGE HEADER -->
   <section class="page-header">
     <h1>Shopping <span>Cart</span></h1>
     <p>Review your items and proceed to checkout</p>
   </section>
 
-  <!-- CART SECTION -->
   <section class="cart-section">
     <div class="cart-container">
-      <!-- CART ITEMS -->
+      
       <div class="cart-items">
         <div class="cart-header">
-          <h2><span id="item-count">0</span> Items in Cart</h2>
+          <h2><span id="item-count">0</span> Items</h2>
           <span class="clear-cart" onclick="clearCart()" title="Clear all items">Clear Cart</span>
         </div>
+        
         <div id="cart-items-container">
-          <!-- Cart items will be dynamically loaded here -->
+          <div class="empty-cart">
+            <div class="empty-cart-icon">🛒</div>
+            <h3>Your cart is empty</h3>
+            <p>Add some delicious donuts to get started!</p>
+            <a href="listing.html" class="btn-shop">Browse Menu</a>
+          </div>
         </div>
       </div>
 
-      <!-- ORDER SUMMARY -->
       <div class="order-summary">
         <h2>Order Summary</h2>
         
         <div class="summary-item">
-          <span>Subtotal:</span>
+          <span>Subtotal</span>
           <span id="subtotal">RM 0.00</span>
         </div>
         <div class="summary-item">
-          <span>Delivery:</span>
+          <span>Delivery</span>
           <span id="delivery">RM 0.00</span>
         </div>
-        <div class="summary-item">
-          <span>Discount:</span>
+        <div class="summary-item" style="color: #3cb371;">
+          <span>Discount</span>
           <span id="discount">- RM 0.00</span>
         </div>
+        
         <div class="summary-total">
-          <span>Total:</span>
+          <span>Total</span>
           <span id="total">RM 0.00</span>
         </div>
 
         <div class="promo-section">
           <h3>Have a Promo Code?</h3>
           <div class="promo-input-group">
-            <input type="text" id="promo-input" placeholder="Enter code">
+            <input type="text" id="promo-input" placeholder="Enter code (e.g. LUKOU10)">
             <button class="btn-apply" onclick="applyPromo()">Apply</button>
           </div>
           <div class="promo-success" id="promo-success">✓ Promo code applied!</div>
         </div>
 
-        <button class="btn-checkout" id="checkout-btn" onclick="proceedToCheckout()">
+        <button class="btn-checkout" id="checkout-btn" onclick="proceedToCheckout()" disabled>
           Proceed to Checkout
         </button>
 
@@ -91,10 +96,10 @@
           💳 🏧 📱
         </div>
       </div>
+
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-brand">
@@ -113,10 +118,10 @@
       <div class="footer-links">
         <h4>Support</h4>
         <ul>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">FAQs</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms & Conditions</a></li>
+          <li><a href="support.html">Contact Us</a></li>
+          <li><a href="support.html">FAQs</a></li>
+          <li><a href="support.html">Privacy Policy</a></li>
+          <li><a href="support.html">Terms & Conditions</a></li>
         </ul>
       </div>
       <div class="footer-links">
