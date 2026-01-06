@@ -1,0 +1,130 @@
+/* ============================================
+   MENU / LISTING PAGE SPECIFIC STYLES
+   ============================================ */
+
+/* 1. FILTER SECTION CONTAINER */
+.filters {
+  background: white;
+  padding: 30px 5%;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 70px; /* Sticks below the navbar */
+  z-index: 900;
+}
+
+.filters-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between; /* Spreads buttons and search apart */
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* 2. FILTER BUTTONS GROUP */
+.filter-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* 3. INDIVIDUAL BUTTON STYLING */
+.filter-btn {
+  padding: 10px 25px;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 50px; /* Makes them pill-shaped */
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit; /* Ensures it uses the site font */
+}
+
+/* Hover Effect */
+.filter-btn:hover {
+  border-color: #f4a460;
+  color: #f4a460;
+  transform: translateY(-2px);
+}
+
+/* Active State (Selected Button) */
+.filter-btn.active {
+  background: linear-gradient(135deg, #f4a460, #e08040);
+  border-color: transparent; /* Hides border on active */
+  color: white;
+  box-shadow: 0 4px 10px rgba(244, 164, 96, 0.4);
+}
+
+/* 4. SEARCH BOX STYLING */
+.search-box {
+  flex: 1; /* Takes up remaining space */
+  max-width: 400px; /* But not too wide */
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px 20px;
+  padding-left: 45px; /* Space for the search icon */
+  border: 2px solid #e0e0e0;
+  border-radius: 50px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: #f9f9f9;
+}
+
+/* Search Focus Effect */
+.search-box input:focus {
+  border-color: #f4a460;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(244, 164, 96, 0.1);
+}
+
+/* Search Icon (Adding a pseudo-element for the magnifying glass) */
+.search-box::before {
+  content: "🔍";
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  opacity: 0.6;
+  pointer-events: none; /* Allows clicking through the icon */
+}
+
+/* 5. LOADING STATE (For the grid) */
+.products-grid p {
+  font-size: 18px;
+  color: #888;
+  font-weight: 500;
+}
+
+/* 6. RESPONSIVE DESIGN (Mobile) */
+@media (max-width: 768px) {
+  .filters-container {
+    flex-direction: column-reverse; /* Put search on top on mobile */
+    align-items: stretch;
+  }
+
+  .search-box {
+    max-width: 100%; /* Full width on mobile */
+  }
+
+  .filter-group {
+    justify-content: center; /* Center buttons */
+    overflow-x: auto; /* Allow scrolling if too many buttons */
+    padding-bottom: 5px;
+  }
+  
+  .filter-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+    white-space: nowrap; /* Prevents text breaking */
+  }
+}
