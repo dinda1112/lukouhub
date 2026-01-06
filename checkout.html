@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - LukouHub</title>
+  <link rel="stylesheet" href="assets/styles/main.css">
+  <link rel="stylesheet" href="assets/styles/checkout.css">
+</head>
+<body>
+
+  <!-- NOTIFICATION -->
+  <div class="notification" id="notification"></div>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">Lukou<span>Hub</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listing.html">Menu</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#locations">Locations</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn">
+          🛒 Cart <span class="cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header">
+    <h1>Checkout</h1>
+    <p>Complete your order</p>
+  </section>
+
+  <!-- CHECKOUT SECTION -->
+  <section class="checkout-section">
+    <div class="checkout-container">
+      
+      <!-- LEFT SIDE: Customer Information Form -->
+      <div class="checkout-form-container">
+        <h2>Customer Information</h2>
+        
+        <form id="checkout-form" class="checkout-form">
+          
+          <!-- Personal Information -->
+          <div class="form-section">
+            <h3>Personal Details</h3>
+            
+            <div class="form-group">
+              <label for="customer-name">Full Name *</label>
+              <input type="text" id="customer-name" placeholder="John Doe" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="customer-phone">Phone Number *</label>
+                <input type="tel" id="customer-phone" placeholder="0123456789" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="customer-email">Email (Optional)</label>
+                <input type="email" id="customer-email" placeholder="john@example.com">
+              </div>
+            </div>
+          </div>
+
+          <!-- Delivery Option -->
+          <div class="form-section">
+            <h3>Delivery Method</h3>
+            
+            <div class="delivery-options">
+              <label class="delivery-option active">
+                <input type="radio" name="delivery" value="delivery" checked onchange="toggleDeliveryFields()">
+                <div class="option-content">
+                  <span class="option-icon">🚚</span>
+                  <div>
+                    <strong>Delivery</strong>
+                    <small>We'll deliver to your address</small>
+                  </div>
+                  <span class="option-price">RM 5.00</span>
+                </div>
+              </label>
+
+              <label class="delivery-option">
+                <input type="radio" name="delivery" value="pickup" onchange="toggleDeliveryFields()">
+                <div class="option-content">
+                  <span class="option-icon">🏪</span>
+                  <div>
+                    <strong>Pickup</strong>
+                    <small>Collect from our store</small>
+                  </div>
+                  <span class="option-price">FREE</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Delivery Address (Visible by default) -->
+          <div class="form-section" id="delivery-address-section">
+            <h3>Delivery Address</h3>
+            
+            <div class="form-group">
+              <label for="customer-address">Street Address *</label>
+              <input type="text" id="customer-address" placeholder="123 Main Street">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="customer-city">City *</label>
+                <input type="text" id="customer-city" placeholder="Kuching">
+              </div>
+              
+              <div class="form-group">
+                <label for="customer-postcode">Postcode *</label>
+                <input type="text" id="customer-postcode" placeholder="93000">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="customer-state">State *</label>
+              <select id="customer-state">
+                <option value="">Select state</option>
+                <option value="Sarawak" selected>Sarawak</option>
+                <option value="Sabah">Sabah</option>
+                <option value="Johor">Johor</option>
+                <option value="Kedah">Kedah</option>
+                <option value="Kelantan">Kelantan</option>
+                <option value="Melaka">Melaka</option>
+                <option value="Negeri Sembilan">Negeri Sembilan</option>
+                <option value="Pahang">Pahang</option>
+                <option value="Penang">Penang</option>
+                <option value="Perak">Perak</option>
+                <option value="Perlis">Perlis</option>
+                <option value="Selangor">Selangor</option>
+                <option value="Terengganu">Terengganu</option>
+                <option value="Kuala Lumpur">Kuala Lumpur</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="form-section">
+            <h3>Payment Method</h3>
+            
+            <div class="payment-options">
+              <label class="payment-option active">
+                <input type="radio" name="payment" value="cash" checked>
+                <div class="option-content">
+                  <span class="option-icon">💵</span>
+                  <strong>Cash on Delivery/Pickup</strong>
+                </div>
+              </label>
+
+              <label class="payment-option">
+                <input type="radio" name="payment" value="card">
+                <div class="option-content">
+                  <span class="option-icon">💳</span>
+                  <strong>Credit/Debit Card</strong>
+                </div>
+              </label>
+
+              <label class="payment-option">
+                <input type="radio" name="payment" value="ewallet">
+                <div class="option-content">
+                  <span class="option-icon">📱</span>
+                  <strong>E-Wallet (Touch 'n Go, GrabPay)</strong>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Special Instructions -->
+          <div class="form-section">
+            <h3>Special Instructions (Optional)</h3>
+            <div class="form-group">
+              <textarea id="special-instructions" rows="3" placeholder="Any special requests or notes for your order..."></textarea>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- RIGHT SIDE: Order Summary -->
+      <div class="order-summary-container">
+        <h2>Order Summary</h2>
+        
+        <div class="order-items" id="order-items">
+          <!-- Items will be loaded here -->
+        </div>
+
+        <div class="order-totals">
+          <div class="total-row">
+            <span>Subtotal</span>
+            <span id="summary-subtotal">RM 0.00</span>
+          </div>
+          <div class="total-row">
+            <span>Delivery Fee</span>
+            <span id="summary-delivery">RM 0.00</span>
+          </div>
+          <div class="total-row discount-row" id="discount-row" style="display: none;">
+            <span>Discount</span>
+            <span id="summary-discount">- RM 0.00</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>Total</span>
+            <span id="summary-total">RM 0.00</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-place-order" id="place-order-btn">
+          Place Order
+        </button>
+
+        <div class="secure-checkout">
+          <span>🔒</span>
+          <small>Secure checkout - Your information is safe</small>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">Lukou<span>Hub</span></a>
+        <p>Borneo's first Greek donut shop, bringing authentic loukoumades to Kuching since 2022.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="listing.html">Menu</a></li>
+          <li><a href="index.html#about">About Us</a></li>
+          <li><a href="index.html#locations">Locations</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">WhatsApp</a></li>
+          <li><a href="#">GrabFood</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 LukouHub. All rights reserved. Made with ❤️ in Kuching, Sarawak.</p>
+    </div>
+  </footer>
+
+  <!-- Firebase Config -->
+  <script type="module" src="assets/scripts/firebase-config.js"></script>
+  
+  <!-- Checkout Script -->
+  <script type="module" src="assets/scripts/checkout.js"></script>
+
+</body>
+</html>

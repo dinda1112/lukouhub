@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Successful - LukouHub</title>
+  <link rel="stylesheet" href="assets/styles/main.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fff5ee 0%, #ffe4b5 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .success-container {
+      max-width: 600px;
+      width: 100%;
+      background: white;
+      padding: 60px 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      animation: slideUp 0.5s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .success-icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 30px;
+      background: linear-gradient(135deg, #3cb371, #2e8b57);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: scaleIn 0.6s ease;
+    }
+
+    @keyframes scaleIn {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .checkmark {
+      font-size: 70px;
+      color: white;
+      font-weight: bold;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #2c1810;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .order-id {
+      display: inline-block;
+      background: linear-gradient(135deg, #f4a460, #e08040);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      margin: 20px 0 30px;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 1px;
+    }
+
+    .message {
+      font-size: 18px;
+      color: #666;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .message strong {
+      color: #2c1810;
+      font-weight: 600;
+    }
+
+    .contact-box {
+      background: #f5f7fa;
+      padding: 25px;
+      border-radius: 15px;
+      margin: 30px 0;
+      border-left: 4px solid #3cb371;
+    }
+
+    .contact-box p {
+      font-size: 16px;
+      color: #666;
+      margin: 10px 0;
+    }
+
+    .contact-box strong {
+      color: #2c1810;
+      display: inline-block;
+      min-width: 100px;
+    }
+
+    .contact-icon {
+      font-size: 24px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    .btn-home {
+      display: inline-block;
+      background: linear-gradient(135deg, #f4a460, #e08040);
+      color: white;
+      padding: 18px 50px;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 600;
+      text-decoration: none;
+      margin-top: 30px;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 20px rgba(244, 164, 96, 0.3);
+    }
+
+    .btn-home:hover {
+      background: linear-gradient(135deg, #e08040, #c06030);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(244, 164, 96, 0.5);
+    }
+
+    .thank-you {
+      font-size: 14px;
+      color: #999;
+      margin-top: 30px;
+      font-style: italic;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .success-container {
+        padding: 40px 25px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .success-icon {
+        width: 100px;
+        height: 100px;
+      }
+
+      .checkmark {
+        font-size: 60px;
+      }
+
+      .order-id {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+
+      .message {
+        font-size: 16px;
+      }
+
+      .btn-home {
+        padding: 15px 40px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="success-container">
+    <!-- Success Icon -->
+    <div class="success-icon">
+      <div class="checkmark">✓</div>
+    </div>
+
+    <!-- Heading -->
+    <h1>Order Placed Successfully!</h1>
+
+    <!-- Order ID -->
+    <div class="order-id" id="order-id">Loading...</div>
+
+    <!-- Message -->
+    <p class="message">
+      Thank you for your order! Your order has been received and is being processed.
+    </p>
+
+    <p class="message">
+      <strong>We will contact you shortly via WhatsApp or Email</strong> with order confirmation and updates.
+    </p>
+
+    <!-- Contact Info -->
+    <div class="contact-box">
+      <p><span class="contact-icon">📱</span><strong>WhatsApp:</strong> +60 12-345 6789</p>
+      <p><span class="contact-icon">✉️</span><strong>Email:</strong> orders@lukouhub.com</p>
+      <p><span class="contact-icon">📍</span><strong>Location:</strong> Kuching, Sarawak</p>
+    </div>
+
+    <!-- Back to Home Button -->
+    <a href="index.html" class="btn-home">Back to Home</a>
+
+    <!-- Thank You -->
+    <p class="thank-you">Thank you for choosing LukouHub!</p>
+  </div>
+
+  <script>
+    // Get order ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('orderId');
+    
+    if (orderId) {
+      document.getElementById('order-id').textContent = orderId;
+    } else {
+      document.getElementById('order-id').textContent = 'N/A';
+    }
+  </script>
+
+</body>
+</html>

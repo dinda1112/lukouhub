@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LukouHub - Borneo's First Greek Donut</title>
+  
+  <!-- Favicon (Donut Emoji) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍩</text></svg>">
+  
   <link rel="stylesheet" href="assets/styles/main.css">
 </head>
 <body>
@@ -11,7 +15,12 @@
   <!-- NAVIGATION -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="#" class="logo">Lukou<span>Hub</span></a>
+      <!-- Logo with Circle Image + Text -->
+      <a href="#" class="logo">
+        <img src="assets/images/logo.png" alt="LukouHub Logo" class="logo-circle">
+        <span class="logo-text">Lukou<span class="logo-highlight">Hub</span></span>
+      </a>
+      
       <ul class="nav-links">
         <li><a href="#">Home</a></li>
         <li><a href="listing.html">Menu</a></li>
@@ -27,30 +36,39 @@
     </div>
   </nav>
 
-  <!-- HERO SECTION -->
-<section class="hero">
-  <div class="hero-container">
-    <div class="hero-content">
-      <p class="hero-tagline">🇬🇷 Borneo's First Greek Donut</p>
-      <h1>Handcrafted <span>Bomboloni</span> & Greek Donuts</h1>
-      <p>Experience authentic Greek donuts made with love and the finest ingredients. From our kitchen in Kuching to your sweet moments!</p>
-      <div class="hero-buttons">
-        <a href="listing.html" class="btn-primary">Order Now 🍩</a>
-        <a href="#packages" class="btn-secondary">View Packages</a>
-      </div>
-    </div>
-    <div class="hero-image">
-      <div class="hero-card">
-        <div class="hero-card-emoji">
-          <img src="assets/images/bomboloni-donut.jpg" alt="Bomboloni Donut" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+  <!-- HERO SECTION WITH VIDEO BACKGROUND -->
+  <section class="hero">
+    <!-- Video Background -->
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="assets/video/hero-video.mp4" type="video/mp4">
+    </video>
+    
+    <!-- Dark Orangey Overlay -->
+    <div class="hero-overlay"></div>
+    
+    <!-- Content -->
+    <div class="hero-container">
+      <div class="hero-content">
+        <p class="hero-tagline">🇬🇷 Borneo's First Greek Donut</p>
+        <h1>Handcrafted <span>Bomboloni</span> & Greek Donuts</h1>
+        <p>Experience authentic Greek donuts made with love and the finest ingredients. From our kitchen in Kuching to your sweet moments!</p>
+        <div class="hero-buttons">
+          <a href="listing.html" class="btn-primary">Order Now 🍩</a>
+          <a href="#packages" class="btn-secondary">View Packages</a>
         </div>
-        <h3>Made Fresh Daily</h3>
-        <p>Authentic Greek recipe with Malaysian twist</p>
-        <div class="hero-badge">🎉 Order on GrabFood!</div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-card">
+          <div class="hero-card-emoji">
+            <img src="assets/images/bomboloni-donut.jpg" alt="Bomboloni Donut" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+          </div>
+          <h3>Made Fresh Daily</h3>
+          <p>Authentic Greek recipe with Malaysian twist</p>
+          <div class="hero-badge">🎉 Order on GrabFood!</div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- FEATURES -->
   <section class="features">
@@ -78,7 +96,7 @@
     </div>
   </section>
 
-  <!-- PACKAGES -->
+ <!-- PACKAGES -->
   <section class="categories" id="packages">
     <div class="section-header">
       <h2>Choose Your <span>Package</span></h2>
@@ -86,25 +104,33 @@
     </div>
     <div class="categories-grid">
       <a href="listing.html?cat=solo" class="category-card">
-        <div class="category-emoji">🍩</div>
+        <div class="category-emoji">
+          <img src="assets/images/solo delight.jpg" alt="Solo Delight" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+        </div>
         <h3>Solo Delight</h3>
         <p>Perfect for personal treats</p>
         <span class="category-price">From RM 8</span>
       </a>
       <a href="listing.html?cat=couple" class="category-card">
-        <div class="category-emoji">💑</div>
+        <div class="category-emoji">
+          <img src="assets/images/couple set.jpg" alt="Couple Set" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+        </div>
         <h3>Couple Set</h3>
         <p>Share sweet moments together</p>
         <span class="category-price">From RM 15</span>
       </a>
       <a href="listing.html?cat=family" class="category-card">
-        <div class="category-emoji">👨‍👩‍👧‍👦</div>
+        <div class="category-emoji">
+          <img src="assets/images/family box.jpg" alt="Family Pack" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+        </div>
         <h3>Family Pack</h3>
         <p>Joy for the whole family</p>
         <span class="category-price">From RM 35</span>
       </a>
       <a href="listing.html?cat=party" class="category-card">
-        <div class="category-emoji">🎉</div>
+        <div class="category-emoji">
+          <img src="assets/images/party box.jpg" alt="Party Box" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+        </div>
         <h3>Party Box</h3>
         <p>Perfect for events & gatherings</p>
         <span class="category-price">From RM 60</span>

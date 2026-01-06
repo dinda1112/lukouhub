@@ -143,8 +143,24 @@ function openProductModal(productId) {
     imageSection.style.background = product.gradient || 'linear-gradient(135deg, #f4a460, #e08040)';
   }
   
-  // Update image (use default emoji if empty)
-  if (modalImage) modalImage.textContent = product.image || '🍩';
+  // Update image - display actual image or emoji
+  if (modalImage) {
+    // Check if product has an image URL
+    if (product.image && product.image.trim()) {
+      // Check if it's a URL (contains http, /, or .)
+      if (product.image.includes('http') || product.image.includes('/') || product.image.includes('.')) {
+        // It's an image URL - display as img tag
+        modalImage.innerHTML = `<img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">`;
+      } else {
+        // It's an emoji or text
+        modalImage.textContent = product.image;
+        modalImage.innerHTML = product.image; // Reset to text
+      }
+    } else {
+      // No image provided, use default emoji
+      modalImage.textContent = '🍩';
+    }
+  }
   
   // Update badge
   if (modalBadges) {
@@ -194,6 +210,9 @@ function closeProductModal() {
   modalQuantity = 1;
 }
 
+// Make globally available immediately
+window.closeProductModal = closeProductModal;
+
 // Increase Modal Quantity
 function modalIncreaseQuantity() {
   if (modalQuantity < 99) {
@@ -208,6 +227,8 @@ function modalIncreaseQuantity() {
   }
 }
 
+window.modalIncreaseQuantity = modalIncreaseQuantity;
+
 // Decrease Modal Quantity
 function modalDecreaseQuantity() {
   if (modalQuantity > 1) {
@@ -221,6 +242,8 @@ function modalDecreaseQuantity() {
     showNotification('Minimum quantity is 1', 'error');
   }
 }
+
+window.modalDecreaseQuantity = modalDecreaseQuantity;
 
 // Update Modal Price
 function updateModalPrice() {
@@ -276,6 +299,11 @@ function modalAddToCart() {
   // Close modal
   closeProductModal();
 }
+
+window.modalAddToCart = modalAddToCart;
+
+// Open Product Modal (make globally available immediately)
+window.openProductModal = openProductModal;
 
 // CATEGORY FILTER FUNCTIONALITY
 function filterProducts(category) {
