@@ -1,5 +1,5 @@
 /* ============================================
-   LUKOUHUB - COMBINED JAVASCRIPT
+   LUKOUHUB - MAIN JAVASCRIPT
    ============================================ */
 
 // ============ SHARED FUNCTIONS ============
@@ -57,9 +57,27 @@ function loadCart() {
     const checkoutBtn = document.getElementById('checkout-btn');
     if (checkoutBtn) checkoutBtn.disabled = false;
     
-    container.innerHTML = cart.map((item, index) => `
+    // --- THE FIX IS IN THIS MAP FUNCTION ---
+    container.innerHTML = cart.map((item, index) => {
+      // 1. Check if the image string looks like a file path (contains / or .)
+      const isFilePath = item.image && (item.image.includes('/') || item.image.includes('.'));
+      
+      // 2. Determine HTML content: either an <img> tag or the emoji text
+      let imageHTML;
+      if (isFilePath) {
+          // It's a file path, create an image tag that fills the container
+          imageHTML = `<img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;">`;
+      } else {
+          // It's an emoji or empty, display text
+          imageHTML = item.image || '🍩';
+      }
+
+      // 3. Determine background: Only add gradient background if it's NOT a real image file
+      const backgroundStyle = isFilePath ? '' : `style="background: linear-gradient(135deg, ${getGradientColors(index)})"`;
+
+      return `
       <div class="cart-item">
-        <div class="item-image" style="background: linear-gradient(135deg, ${getGradientColors(index)})">${item.image || '🍩'}</div>
+        <div class="item-image" ${backgroundStyle}>${imageHTML}</div>
         <div class="item-details">
           <div class="item-category">${item.category || 'Solo Delight'}</div>
           <h3>${item.name}</h3>
@@ -75,13 +93,14 @@ function loadCart() {
           <span class="remove-item" onclick="removeItem(${index})" title="Remove item">🗑️ Remove</span>
         </div>
       </div>
-    `).join('');
+    `}).join('');
+    // --- END OF FIX ---
   }
   
   updateSummary();
 }
 
-// Get gradient colors for variety
+// Get gradient colors for variety (used only for emoji fallbacks now)
 function getGradientColors(index) {
   const gradients = [
     '#8b4513, #d2691e',
@@ -151,6 +170,7 @@ function clearCart() {
   if (confirm('Clear all items from cart? This cannot be undone.')) {
     localStorage.setItem('cart', '[]');
     localStorage.removeItem('discount');
+    localStorage.removeItem('promoCode');
     const promoInput = document.getElementById('promo-input');
     if (promoInput) promoInput.value = '';
     const promoSuccess = document.getElementById('promo-success');
@@ -214,6 +234,9 @@ function applyPromo() {
     showNotification('Invalid promo code. Try: LUKOU10, WELCOME, or FIRSTORDER', 'error');
     const promoSuccess = document.getElementById('promo-success');
     if (promoSuccess) promoSuccess.style.display = 'none';
+    localStorage.removeItem('discount');
+    localStorage.removeItem('promoCode');
+    updateSummary();
   }
 }
 
@@ -289,4 +312,3 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeFilters();
   }
 });
-
