@@ -3,148 +3,188 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Confirmed - LukouHub</title>
+  <title>Review Order - LukouHub</title>
   <link rel="stylesheet" href="assets/styles/main.css">
   <link rel="stylesheet" href="assets/styles/order-confirmation.css">
+  
+  <style>
+    /* Additional styles to make the cart list look good */
+    .review-item-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 15px;
+      color: #333;
+    }
+    
+    .review-total-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid #2c1810;
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #2c1810;
+    }
+
+    /* Override the checkmark icon to look like a clipboard for "Review" */
+    .success-icon .checkmark::before {
+      content: "📋"; 
+      font-size: 50px;
+    }
+    .success-icon .checkmark {
+      font-size: 0; /* Hide the old checkmark text */
+    }
+    .success-icon {
+      background: linear-gradient(135deg, #f4a460, #e08040);
+    }
+  </style>
 </head>
 <body>
 
-  <!-- NAVIGATION -->
   <nav class="navbar">
     <div class="nav-container">
       <a href="index.html" class="logo">Lukou<span>Hub</span></a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="listing.html">Menu</a></li>
-        <li><a href="index.html#about">About</a></li>
-        <li><a href="index.html#locations">Locations</a></li>
-      </ul>
-      <div class="nav-actions">
-        <a href="cart.html" class="cart-btn">
-          🛒 Cart <span class="cart-count">0</span>
-        </a>
-      </div>
     </div>
   </nav>
 
-  <!-- ORDER CONFIRMATION SECTION -->
   <section class="confirmation-section">
     <div class="confirmation-container">
       
-      <!-- Success Icon -->
       <div class="success-icon">
-        <div class="checkmark">✓</div>
+        <div class="checkmark"></div>
       </div>
 
-      <!-- Order Confirmed Message -->
-      <h1>Order Confirmed!</h1>
+      <h1>Review Your Order</h1>
       <p class="confirmation-message">
-        Thank you for your order! We've received your order and will start preparing it soon.
+        Please verify your items before we send the order to the kitchen.
       </p>
 
-      <!-- Order ID -->
-      <div class="order-id-box">
-        <span class="order-id-label">Order ID:</span>
-        <span class="order-id" id="order-id">Loading...</span>
-      </div>
-
-      <!-- Order Details -->
       <div class="order-details-box">
-        <h3>Order Details</h3>
+        <h3>Order Summary</h3>
         <div id="order-details-content">
-          <p style="text-align: center; color: #999;">Loading order details...</p>
+          <p style="text-align: center; color: #999; padding: 20px;">Loading cart...</p>
+        </div>
+        
+        <div class="review-total-row">
+          <span>Total:</span>
+          <span id="review-total">RM 0.00</span>
         </div>
       </div>
 
-      <!-- What's Next -->
-      <div class="whats-next">
-        <h3>What's Next?</h3>
-        <div class="steps">
-          <div class="step">
-            <div class="step-icon">📋</div>
-            <div class="step-content">
-              <strong>Order Confirmed</strong>
-              <small>We've received your order</small>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-icon">👨‍🍳</div>
-            <div class="step-content">
-              <strong>Preparing</strong>
-              <small>We're making your donuts fresh</small>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-icon">✅</div>
-            <div class="step-content">
-              <strong>Ready</strong>
-              <small id="ready-message">Ready for pickup/delivery</small>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Actions -->
       <div class="confirmation-actions">
-        <a href="listing.html" class="btn-secondary">Continue Shopping</a>
-        <a href="index.html" class="btn-primary">Back to Home</a>
+        <button id="confirm-btn" class="btn-primary" style="width: 100%; border: none; cursor: pointer; font-size: 16px; padding: 15px;">
+          Looks good! Confirm Order
+        </button>
+        
+        <a href="cart.html" class="btn-secondary" style="margin-top: 15px; display: block; text-align: center; color: #666; text-decoration: none;">
+          Back to Cart
+        </a>
       </div>
 
-      <!-- Contact Info -->
       <div class="contact-info">
-        <p>Need help with your order?</p>
-        <p><strong>Call us:</strong> +60 12-345 6789</p>
-        <p><strong>WhatsApp:</strong> +60 12-345 6789</p>
+        <p>Need help? <strong>Call us:</strong> +60 12-345 6789</p>
       </div>
 
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-brand">
-        <a href="index.html" class="logo">Lukou<span>Hub</span></a>
-        <p>Borneo's first Greek donut shop, bringing authentic loukoumades to Kuching since 2022.</p>
-      </div>
-      <div class="footer-links">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="listing.html">Menu</a></li>
-          <li><a href="index.html#about">About Us</a></li>
-          <li><a href="index.html#locations">Locations</a></li>
-        </ul>
-      </div>
-      <div class="footer-links">
-        <h4>Support</h4>
-        <ul>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">FAQs</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms & Conditions</a></li>
-        </ul>
-      </div>
-      <div class="footer-links">
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="#">Instagram</a></li>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">WhatsApp</a></li>
-          <li><a href="#">GrabFood</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2024 LukouHub. All rights reserved. Made with ❤️ in Kuching, Sarawak.</p>
-    </div>
-  </footer>
+  <script type="module">
+    import { db, collection, addDoc } from './assets/scripts/firebase-config.js';
 
-  <!-- Firebase Config -->
-  <script type="module" src="assets/scripts/firebase-config.js"></script>
-  
-  <!-- Order Confirmation Script -->
-  <script type="module" src="assets/scripts/order-confirmation.js"></script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Get the cart from local storage
+        const cart = JSON.parse(localStorage.getItem('checkoutCart') || '[]');
+        const listContainer = document.getElementById('order-details-content');
+        const totalElement = document.getElementById('review-total');
+        const confirmBtn = document.getElementById('confirm-btn');
+
+        // If empty, kick them back to menu
+        if (cart.length === 0) {
+            window.location.href = 'listing.html';
+            return;
+        }
+
+        // 2. Calculate Totals
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const delivery = 5.00;
+        const discount = parseFloat(localStorage.getItem('discount') || '0');
+        const total = Math.max(0, subtotal + delivery - discount);
+
+        totalElement.textContent = `RM ${total.toFixed(2)}`;
+
+        // 3. Render the list of items
+        let itemsHtml = cart.map(item => `
+            <div class="review-item-row">
+                <span><strong>${item.quantity}x</strong> ${item.name}</span>
+                <span>RM ${(item.price * item.quantity).toFixed(2)}</span>
+            </div>
+        `).join('');
+
+        // Add Delivery & Discount rows
+        itemsHtml += `
+            <div class="review-item-row" style="color: #666; font-size: 14px;">
+                <span>Delivery Fee</span>
+                <span>RM 5.00</span>
+            </div>
+        `;
+
+        if (discount > 0) {
+            itemsHtml += `
+                <div class="review-item-row" style="color: #3cb371; font-size: 14px;">
+                    <span>Discount</span>
+                    <span>- RM ${discount.toFixed(2)}</span>
+                </div>
+            `;
+        }
+
+        listContainer.innerHTML = itemsHtml;
+
+        // 4. Handle Button Click (Send to Firebase)
+        confirmBtn.onclick = async () => {
+            // Disable button to prevent double clicking
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = "Processing...";
+            confirmBtn.style.opacity = "0.7";
+
+            try {
+                // Generate a random Order ID like LUK-A1B2
+                const orderId = 'LUK-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+
+                const newOrder = {
+                    orderId: orderId,
+                    date: new Date().toISOString(),
+                    items: cart,
+                    total: total,
+                    status: 'pending',
+                    customerName: "Guest Customer",
+                    platform: "Web"
+                };
+
+                // Send to Firebase
+                await addDoc(collection(db, 'orders'), newOrder);
+
+                // Clear all cart data
+                localStorage.removeItem('cart');
+                localStorage.removeItem('checkoutCart');
+                localStorage.removeItem('discount');
+                localStorage.removeItem('promoCode');
+
+                // Redirect to Success Page with the Order ID
+                window.location.href = `order-success.html?orderId=${orderId}`;
+
+            } catch (error) {
+                console.error("Order Error:", error);
+                alert("Something went wrong. Please check your internet connection.");
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = "Looks good! Confirm Order";
+                confirmBtn.style.opacity = "1";
+            }
+        };
+    });
+  </script>
 
 </body>
 </html>
