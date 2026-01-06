@@ -6,6 +6,7 @@
     <title>Confirm Your Order - LukouHub</title>
     <link rel="stylesheet" href="assets/styles/main.css">
     <style>
+        /* Specific styling for the confirmation card */
         .confirmation-box {
             background: white;
             border-radius: 25px;
@@ -23,7 +24,7 @@
             display: flex;
             justify-content: space-between;
             padding: 12px 0;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #f0f0f0;
         }
         .checkout-actions {
             display: grid;
@@ -49,11 +50,13 @@
     <section class="cart-section">
         <div class="confirmation-box">
             <h2>Order Summary</h2>
+            
             <div id="checkout-list" class="summary-list">
-                </div>
+                <p style="color: #999;">Loading summary...</p>
+            </div>
 
             <div class="order-summary" style="padding: 0; box-shadow: none;">
-                <div class="summary-total" style="border-top: 2px solid #2c1810; margin-top: 10px;">
+                <div class="summary-total" style="border-top: 2px solid #2c1810; margin-top: 10px; padding-top: 20px;">
                     <span>Total Amount:</span>
                     <span id="final-total">RM 0.00</span>
                 </div>
@@ -67,8 +70,10 @@
     </section>
 
     <script type="module">
+        // Import your Firebase tools
         import { db, collection, addDoc } from './assets/scripts/firebase-config.js';
 
+        // 1. Load the summary as soon as the page opens
         document.addEventListener('DOMContentLoaded', () => {
             const cart = JSON.parse(localStorage.getItem('checkoutCart') || '[]');
             const listContainer = document.getElementById('checkout-list');
@@ -79,7 +84,7 @@
                 return;
             }
 
-            // Calculate totals
+            // Calculate Final Totals
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const delivery = 5.00;
             const discount = parseFloat(localStorage.getItem('discount') || '0');
@@ -87,7 +92,7 @@
 
             totalDisplay.textContent = `RM ${total.toFixed(2)}`;
 
-            // Render list
+            // Create the HTML list of items
             listContainer.innerHTML = cart.map(item => `
                 <div class="summary-item-row">
                     <span><strong>${item.quantity}x</strong> ${item.name}</span>
@@ -95,31 +100,37 @@
                 </div>
             `).join('');
 
-            // Submit to Firebase
+            // 2. MAKE THE FUNCTION PUBLIC
+            // We attach it to 'window' so the HTML button can find it.
             window.submitOrder = async () => {
                 try {
+                    // Create the order data object
                     const newOrder = {
                         orderId: 'LUK-' + Math.random().toString(36).substr(2, 7).toUpperCase(),
                         date: new Date().toISOString(),
                         items: cart,
                         total: total,
                         status: 'pending',
-                        customerName: "Customer", // You can expand this with a form later
+                        customerName: "Customer", 
                         phone: "012-3456789"
                     };
 
+                    console.log("Submitting order to Firebase...");
+
+                    // Save to Firestore
                     await addDoc(collection(db, 'orders'), newOrder);
                     
-                    // Clear all cart data
+                    // Clear the cart completely
                     localStorage.removeItem('cart');
                     localStorage.removeItem('checkoutCart');
                     localStorage.removeItem('discount');
                     localStorage.removeItem('promoCode');
 
+                    // Go to success page
                     window.location.href = 'success.html';
                 } catch (e) {
-                    console.error("Error adding document: ", e);
-                    alert("Order failed. Please try again.");
+                    console.error("Firebase Error: ", e);
+                    alert("Order failed to send. Check your internet or Firebase console.");
                 }
             };
         });
