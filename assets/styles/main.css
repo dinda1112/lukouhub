@@ -532,12 +532,19 @@ a {
 }
 
 .product-image {
-  height: 200px;
+  height: 280px; /* Increased height to show full image */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 80px;
   position: relative;
+  background: #f8f8f8; /* Light background */
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Show full image without cropping */
 }
 
 .products-section .product-image {
