@@ -1,5 +1,5 @@
 /* ============================================
-   LISTING PAGE - FIREBASE VERSION (STRICT START-WITH)
+   LISTING PAGE - FIREBASE VERSION (STRICT START-WITH FIX)
    1. Search STRICTLY checks the first letter(s) of the NAME.
    2. "n" will show "Nutella", but NOT "Vanilla".
    3. Combined with Category buttons.
@@ -130,8 +130,8 @@ function runCombinedFilter() {
         // B. Search Check (STRICT: STARTS WITH ONLY)
         let matchesSearch = true;
         if (searchTerm) {
-             // CHANGED TO: product.name.toLowerCase().includes(searchTerm)
-             matchesSearch = product.name.toLowerCase().includes(searchTerm);
+             // THIS IS THE FIX: Using startsWith() instead of includes()
+             matchesSearch = product.name.toLowerCase().startsWith(searchTerm);
         }
 
         return matchesCategory && matchesSearch;
