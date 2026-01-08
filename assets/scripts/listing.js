@@ -130,8 +130,8 @@ function runCombinedFilter() {
         // B. Search Check (STRICT: STARTS WITH ONLY)
         let matchesSearch = true;
         if (searchTerm) {
-             // CHANGE: Used startsWith() instead of includes()
-             matchesSearch = product.name.toLowerCase().startsWith(searchTerm);
+             // CHANGED TO: product.name.toLowerCase().includes(searchTerm)
+             matchesSearch = product.name.toLowerCase().includes(searchTerm);
         }
 
         return matchesCategory && matchesSearch;
