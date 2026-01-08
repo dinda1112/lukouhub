@@ -4,21 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Menu - LukouHub</title>
+  
   <link rel="stylesheet" href="assets/styles/main.css">
+  
   <link rel="stylesheet" href="assets/styles/product-modal.css">
+  
+  <link rel="stylesheet" href="assets/styles/listing.css">
 </head>
 <body>
 
-  <!-- NOTIFICATION -->
   <div class="notification" id="notification"></div>
 
-  <!-- NAVIGATION -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="index.html" class="logo">
-        <img src="assets/images/logo.png" alt="LukouHub Logo" class="logo-circle">
-        <span class="logo-text">Lukou<span class="logo-highlight">Hub</span></span>
-      </a>
+      <a href="index.html" class="logo">Lukou<span>Hub</span></a>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="listing.html">Menu</a></li>
@@ -34,15 +33,14 @@
     </div>
   </nav>
 
-  <!-- PAGE HEADER -->
   <section class="page-header">
     <h1>Our <span>Menu</span></h1>
     <p>Handcrafted Greek donuts & bomboloni made fresh daily</p>
   </section>
 
-  <!-- FILTERS -->
   <section class="filters">
     <div class="filters-container">
+      
       <div class="filter-group">
         <button class="filter-btn active" data-category="all">All</button>
         <button class="filter-btn" data-category="solo">Solo</button>
@@ -50,29 +48,29 @@
         <button class="filter-btn" data-category="family">Family</button>
         <button class="filter-btn" data-category="party">Party</button>
       </div>
+
       <div class="search-box">
-        <input type="text" placeholder="🔍 Search for donuts...">
+        <input type="text" id="search-input" placeholder="Search for donuts...">
       </div>
+
     </div>
   </section>
 
-  <!-- PRODUCTS -->
   <section class="products-section">
     <div class="products-grid" id="products-grid">
-      <!-- Products will be loaded here dynamically from Firebase -->
       <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
-        <p style="color: #999;">Loading products...</p>
+        <p>Loading delicious donuts...</p>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-brand">
-        <a href="#" class="logo">Lukou<span>Hub</span></a>
+        <a href="index.html" class="logo">Lukou<span>Hub</span></a>
         <p>Borneo's first Greek donut shop, bringing authentic loukoumades to Kuching since 2022.</p>
       </div>
+      
       <div class="footer-links">
         <h4>Quick Links</h4>
         <ul>
@@ -82,45 +80,44 @@
           <li><a href="index.html#locations">Locations</a></li>
         </ul>
       </div>
+      
       <div class="footer-links">
         <h4>Support</h4>
         <ul>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">FAQs</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms & Conditions</a></li>
+          <li><a href="support.html#contact">Contact Us</a></li>
+          <li><a href="support.html#faq">FAQs</a></li>
+          <li><a href="support.html#privacy">Privacy Policy</a></li>
+          <li><a href="support.html#terms">Terms & Conditions</a></li>
         </ul>
       </div>
+      
       <div class="footer-links">
         <h4>Connect</h4>
         <ul>
-          <li><a href="#">Instagram</a></li>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">WhatsApp</a></li>
-          <li><a href="#">GrabFood</a></li>
+          <li><a href="https://www.instagram.com/lukouhub?igsh=MWJ3bHc4ZTVpeWkwYw==" target="_blank">Instagram</a></li>
+          <li><a href="https://www.facebook.com/share/16skXD4EsV/?mibextid=wwXIfr" target="_blank">Facebook</a></li>
+          <li><a href="https://wa.me/60149933988" target="_blank">WhatsApp</a></li>
+          <li><a href="https://r.grab.com/g/6-20251223_181132_2932751217194D38A3A23720BE8B6CD2_MEXMPS-1-C63HABNUVEVCVT" target="_blank">GrabFood</a></li>
         </ul>
       </div>
     </div>
+    
     <div class="footer-bottom">
       <p>&copy; 2024 LukouHub. All rights reserved. Made with ❤️ in Kuching, Sarawak.</p>
     </div>
   </footer>
 
-  <!-- PRODUCT DETAIL MODAL -->
   <div class="product-modal" id="product-modal">
     <div class="modal-overlay" onclick="closeProductModal()"></div>
     <div class="modal-content">
-      <!-- Close Button -->
       <button class="modal-close" onclick="closeProductModal()">✕</button>
       
       <div class="modal-body">
-        <!-- Product Image -->
         <div class="modal-image-section">
           <div class="modal-product-image" id="modal-product-image">🍩</div>
           <div class="modal-badges" id="modal-badges"></div>
         </div>
 
-        <!-- Product Info -->
         <div class="modal-info-section">
           <div class="modal-header">
             <div>
@@ -139,7 +136,6 @@
             Deliciously tasty and perfectly crispy.
           </div>
 
-          <!-- Quantity Selector -->
           <div class="modal-quantity-section">
             <label>Quantity</label>
             <div class="modal-quantity-controls">
@@ -149,7 +145,6 @@
             </div>
           </div>
 
-          <!-- Add to Cart Button -->
           <button class="modal-add-cart-btn" id="modal-add-cart-btn" onclick="modalAddToCart()">
             Add to cart - <span id="modal-total-price">RM 8.90</span>
           </button>
@@ -158,7 +153,6 @@
     </div>
   </div>
 
-  <!-- Load scripts -->
   <script src="assets/scripts/main.js"></script>
   <script type="module" src="assets/scripts/listing.js"></script>
   <script type="module" src="assets/scripts/product-modal.js"></script>
