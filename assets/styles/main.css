@@ -1,5 +1,5 @@
 /* ============================================
-   LUKOUHUB - MAIN STYLESHEET
+   LUKOUHUB - MAIN STYLESHEET WITH CIRCLE LOGO
    ============================================ */
 
 /* ============ RESET & BASE ============ */
@@ -515,6 +515,37 @@ a {
   margin: 0 auto;
 }
 
+/* Image-only grid for homepage */
+.products-grid-images {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.product-image-card {
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 350px;
+}
+
+.product-image-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.product-image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Original products grid for listing page */
 .products-grid {
   max-width: 1200px;
   margin: 0 auto;
@@ -948,6 +979,14 @@ a {
     grid-template-columns: repeat(2, 1fr); 
   }
   
+  .products-grid-images {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .product-image-card {
+    height: 300px;
+  }
+  
   .about-container { 
     grid-template-columns: 1fr; 
     text-align: center; 
@@ -1063,6 +1102,14 @@ a {
   
   .products-grid { 
     grid-template-columns: 1fr; 
+  }
+  
+  .products-grid-images {
+    grid-template-columns: 1fr;
+  }
+  
+  .product-image-card {
+    height: 280px;
   }
   
   .about-stats { 
