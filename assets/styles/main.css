@@ -393,8 +393,8 @@ a {
 }
 
 .feature-icon {
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -538,26 +538,27 @@ a {
 }
 
 .product-image {
-  height: 200px;
+  height: 250px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 80px;
   position: relative;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .products-section .product-image {
-  height: 220px;
+  height: 250px;
 }
 
-.product-card:nth-child(1) .product-image { 
-  background: linear-gradient(135deg, #8b4513, #d2691e); 
-}
-.product-card:nth-child(2) .product-image { 
-  background: linear-gradient(135deg, #90ee90, #ffb6c1); 
-}
-.product-card:nth-child(3) .product-image { 
-  background: linear-gradient(135deg, #deb887, #8b4513); 
+/* Remove gradient backgrounds when image is present */
+.product-card .product-image { 
+  background: none;
 }
 
 .product-badge {
@@ -637,6 +638,81 @@ a {
 .view-all {
   text-align: center;
   margin-top: 50px;
+}
+
+/* ============ ABOUT SECTION ============ */
+.about {
+  padding: 80px 5%;
+  background: linear-gradient(135deg, #2c1810 0%, #4a2c2a 100%);
+  color: white;
+}
+
+/* ============ WHAT'S NEW BANNER ============ */
+.whats-new-banner {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.banner-content h2 {
+  font-size: 56px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+  letter-spacing: 2px;
+}
+
+@media (max-width: 768px) {
+  .whats-new-banner {
+    height: 300px;
+  }
+  
+  .banner-content h2 {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 576px) {
+  .whats-new-banner {
+    height: 250px;
+  }
+  
+  .banner-content h2 {
+    font-size: 28px;
+  }
 }
 
 /* ============ ABOUT SECTION ============ */
@@ -899,6 +975,31 @@ a {
   
   .logo-text {
     font-size: 24px;
+  }
+  
+  /* Cart button smaller on mobile */
+  .cart-btn {
+    padding: 8px 18px;
+    font-size: 14px;
+  }
+  
+  /* Hide emoji on mobile cart button */
+  .cart-btn::before {
+    content: '';
+  }
+  
+  .cart-btn {
+    font-size: 0;
+  }
+  
+  .cart-count {
+    font-size: 12px;
+    margin-left: 0;
+  }
+  
+  .cart-btn::after {
+    content: 'Cart';
+    font-size: 14px;
   }
   
   .hero {
