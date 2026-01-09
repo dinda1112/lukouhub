@@ -2,8 +2,7 @@
 // LISTING PAGE - FILTER & SEARCH (FIXED)
 // ==========================================
 
-import { db } from './firebase-config.js';
-import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+import { db, collection, getDocs } from './firebase-config.js';
 
 let allProducts = [];
 let currentCategory = 'all';
