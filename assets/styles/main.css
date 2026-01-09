@@ -21,6 +21,27 @@ a {
   color: inherit;
 }
 
+#notification {
+  position: fixed;    /* Keeps it in the same spot even if you scroll */
+  top: 100px;         /* Place it below the navbar */
+  right: 20px;        /* Align to the right side */
+  z-index: 99999;     /* Force it to the very front layer */
+  
+  padding: 16px 32px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  
+  display: none;      /* JavaScript will toggle this to 'block' */
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
 /* ============ NAVIGATION ============ */
 .navbar {
   background: linear-gradient(135deg, #2c1810 0%, #4a2c2a 100%);
