@@ -25,6 +25,7 @@ async function loadProducts() {
     });
     
     console.log('✅ Loaded products:', allProducts.length);
+    console.log("Current products in memory:", allProducts);
     displayProducts();
     
   } catch (error) {
@@ -221,7 +222,15 @@ function checkURLParams() {
 // QUICK ADD TO CART
 // ==========================================
 window.quickAddToCart = function(productId) {
-  const product = allProducts.find(p => p.id === productId);
+
+  const product = allProducts.find(p => p.id == productId);
+
+  if (!allProducts || allProducts.length === 0) {
+    console.error('❌ Products not loaded yet.');
+    console.log('Available IDs:', allProducts.map(p => p.id));
+    return;
+  }
+
   if (!product) {
     console.error('❌ Product not found:', productId);
     return;
