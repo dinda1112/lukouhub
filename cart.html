@@ -5,17 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shopping Cart - LukouHub</title>
   
-  <link rel="stylesheet" href="assets/styles/main.css">
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍩</text></svg>">
   
+  <link rel="stylesheet" href="assets/styles/main.css">
   <link rel="stylesheet" href="assets/styles/cart.css">
 </head>
 <body>
 
   <div class="notification" id="notification"></div>
 
+  <!-- NAVIGATION -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="index.html" class="logo">Lukou<span>Hub</span></a>
+      <!-- Logo with Circle Image + Text -->
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo.png" alt="LukouHub Logo" class="logo-circle">
+        <span class="logo-text">Lukou<span class="logo-highlight">Hub</span></span>
+      </a>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="listing.html">Menu</a></li>
@@ -23,6 +30,7 @@
         <li><a href="index.html#locations">Locations</a></li>
       </ul>
       <div class="nav-actions">
+        <a href="admin.html" class="admin-link">Admin</a>
         <a href="cart.html" class="cart-btn">
           🛒 Cart <span class="cart-count">0</span>
         </a>
@@ -30,14 +38,17 @@
     </div>
   </nav>
 
+  <!-- PAGE HEADER -->
   <section class="page-header">
     <h1>Shopping <span>Cart</span></h1>
     <p>Review your items and proceed to checkout</p>
   </section>
 
+  <!-- CART SECTION -->
   <section class="cart-section">
     <div class="cart-container">
       
+      <!-- Cart Items -->
       <div class="cart-items">
         <div class="cart-header">
           <h2><span id="item-count">0</span> Items</h2>
@@ -54,6 +65,7 @@
         </div>
       </div>
 
+      <!-- Order Summary -->
       <div class="order-summary">
         <h2>Order Summary</h2>
         
@@ -75,6 +87,7 @@
           <span id="total">RM 0.00</span>
         </div>
 
+        <!-- Promo Code -->
         <div class="promo-section">
           <h3>Have a Promo Code?</h3>
           <div class="promo-input-group">
@@ -100,6 +113,7 @@
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-brand">
