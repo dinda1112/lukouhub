@@ -1,9 +1,9 @@
 // ==========================================
-// LISTING PAGE - FILTER & SEARCH (FIXED)
+// LISTING PAGE - FILTER & SEARCH (FIXED IMPORTS)
 // ==========================================
 
-import { db } from './firebase-config.js';
-import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+// FIX: Import EVERYTHING from the local config to ensure versions match
+import { db, collection, getDocs } from './firebase-config.js';
 
 let allProducts = [];
 let currentCategory = 'all';
@@ -31,7 +31,9 @@ async function loadProducts() {
     console.error('❌ Error loading products:', error);
     document.getElementById('products-grid').innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #e63946;">
-        <p>Error loading products. Please refresh the page.</p>
+        <h3>Error loading products</h3>
+        <p>Please refresh the page or check your internet connection.</p>
+        <p style="font-size: 12px; color: #999;">${error.message}</p>
       </div>
     `;
   }
@@ -90,14 +92,26 @@ function displayProducts() {
   
   grid.innerHTML = filteredProducts.map(product => {
     const price = parseFloat(product.price || 0).toFixed(2);
-    const image = product.image || 'assets/images/placeholder.jpg';
+    
+    // Logic to handle image vs emoji
+    const isFilePath = product.image && (product.image.includes('/') || product.image.includes('.'));
+    let imageHTML;
+    if (isFilePath) {
+        imageHTML = `<img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;">`;
+    } else {
+        imageHTML = product.image || '🍩';
+    }
+    
+    // Only use gradient background if it's NOT a real image
+    const bgStyle = isFilePath ? '' : `style="background: linear-gradient(135deg, #f4a460, #e08040);"`;
+
     const badge = product.badge ? `<span class="product-badge ${(product.badge || '').toLowerCase()}">${product.badge}</span>` : '';
     
     return `
       <div class="product-card" onclick="openProductModal('${product.id}')">
-        <div class="product-image">
+        <div class="product-image" ${bgStyle}>
           ${badge}
-          <img src="${image}" alt="${product.name}" onerror="this.src='assets/images/placeholder.jpg'">
+          ${imageHTML}
         </div>
         <div class="product-info">
           <div class="product-category">${product.category || 'Solo'}</div>
@@ -305,14 +319,3 @@ document.addEventListener('DOMContentLoaded', () => {
   
   console.log('✅ Listing page ready!');
 });
-
-// ==========================================
-// DEBUG: Log current state
-// ==========================================
-window.debugListing = function() {
-  console.log('📊 LISTING DEBUG:');
-  console.log('Total products:', allProducts.length);
-  console.log('Current category:', currentCategory);
-  console.log('Search term:', searchTerm);
-  console.log('Filtered products:', filterProducts().length);
-};
