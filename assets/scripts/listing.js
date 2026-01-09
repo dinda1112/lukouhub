@@ -266,7 +266,10 @@ window.quickAddToCart = function(productId) {
   // Show notification
   if (typeof window.showNotification === 'function') {
     window.showNotification(`${product.name} added to cart!`, 'success');
-  }
+  } else {
+    // Fallback if main.js hasn't finished loading
+    alert(`${product.name} added to cart!`);
+}
 };
 
 // ==========================================
