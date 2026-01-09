@@ -1,5 +1,5 @@
 // ==========================================
-// LISTING PAGE - FILTER & SEARCH (FIXED MATCHING)
+// LISTING PAGE - FILTER & SEARCH
 // ==========================================
 
 import { db, collection, getDocs } from './firebase-config.js';
@@ -48,8 +48,13 @@ function filterProducts() {
   if (currentCategory !== 'all') {
     filteredProducts = filteredProducts.filter(product => {
       const productCategory = (product.category || '').toLowerCase();
-      // FIX: Use .includes() instead of === to match "Solo" with "Solo Delight"
-      return productCategory.includes(currentCategory.toLowerCase());
+      const filterValue = currentCategory.toLowerCase();
+      
+      // DEBUG: This log helps us see what is being compared
+      // console.log(`Comparing: "${productCategory}" with "${filterValue}"`);
+
+      // FIX: Use .includes() so "Solo" matches "Solo Delight"
+      return productCategory.includes(filterValue);
     });
   }
   
@@ -90,7 +95,7 @@ function displayProducts() {
   grid.innerHTML = filteredProducts.map(product => {
     const price = parseFloat(product.price || 0).toFixed(2);
     
-    // Image Handling Logic
+    // Image Logic
     const isFilePath = product.image && (product.image.includes('/') || product.image.includes('.'));
     let imageHTML;
     if (isFilePath) {
@@ -133,9 +138,9 @@ function setupFilters() {
   
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
-      // Remove active class from all
+      // Remove active from all
       filterButtons.forEach(btn => btn.classList.remove('active'));
-      // Add active class to clicked
+      // Add active to clicked
       button.classList.add('active');
       
       // Update state and refresh
