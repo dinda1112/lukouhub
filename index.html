@@ -31,32 +31,35 @@
       cursor: pointer;
     }
 
+    /* --- UPDATED RIBBON STYLES --- */
     .ribbon-wrapper {
       position: absolute;
       top: -5px;
       right: -5px;
-      width: 85px;
-      height: 85px;
+      width: 100px; /* Increased width */
+      height: 100px; /* Increased height */
       overflow: hidden;
       z-index: 10;
+      pointer-events: none; /* Let clicks pass through to the card */
     }
 
     .ribbon {
       position: absolute;
-      top: 15px;
-      right: -25px;
-      width: 120px;
+      top: 25px; /* Adjusted top */
+      right: -25px; /* Adjusted right */
+      width: 140px; /* Increased width */
       background: #e63946; /* Red color */
       color: white;
       text-align: center;
       font-size: 10px;
       font-weight: 800;
       letter-spacing: 0.5px;
-      padding: 5px 0;
+      padding: 7px 0; /* Increased padding slightly */
       transform: rotate(45deg);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3); /* Stronger shadow for better visibility */
       text-transform: uppercase;
     }
+    /* --- END UPDATED RIBBON STYLES --- */
 
     /* Modal Styles for Coming Soon Popup */
     .cs-modal {
@@ -389,7 +392,7 @@
     </div>
     
     <div class="footer-bottom">
-      <p>&copy; 2024 LukouHub. All rights reserved. Made with ❤️ in Kuching, Sarawak.</p>
+      <p>© 2024 LukouHub. All rights reserved. Made with ❤️ in Kuching, Sarawak.</p>
     </div>
   </footer>
 
