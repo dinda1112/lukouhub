@@ -264,7 +264,9 @@ window.quickAddToCart = function(productId) {
   updateCartCount();
   
   // Show notification
-  showNotification(`${product.name} added to cart!`);
+  if (typeof window.showNotification === 'function') {
+    window.showNotification(`${product.name} added to cart!`, 'success');
+  }
 };
 
 // ==========================================
