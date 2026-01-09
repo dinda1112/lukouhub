@@ -1,8 +1,7 @@
 // ==========================================
-// LISTING PAGE - FILTER & SEARCH
+// LISTING PAGE - FILTER & SEARCH (FIXED MATCHING)
 // ==========================================
 
-// FIX: Import EVERYTHING from local config to match versions
 import { db, collection, getDocs } from './firebase-config.js';
 
 let allProducts = [];
@@ -45,15 +44,16 @@ async function loadProducts() {
 function filterProducts() {
   let filteredProducts = allProducts;
   
-  // Filter by category
+  // 1. Filter by category
   if (currentCategory !== 'all') {
     filteredProducts = filteredProducts.filter(product => {
       const productCategory = (product.category || '').toLowerCase();
-      return productCategory === currentCategory.toLowerCase();
+      // FIX: Use .includes() instead of === to match "Solo" with "Solo Delight"
+      return productCategory.includes(currentCategory.toLowerCase());
     });
   }
   
-  // Filter by search term
+  // 2. Filter by search term
   if (searchTerm) {
     const search = searchTerm.toLowerCase();
     filteredProducts = filteredProducts.filter(product => {
@@ -63,7 +63,7 @@ function filterProducts() {
     });
   }
   
-  console.log(`🔍 Filtered: ${filteredProducts.length} products (category: ${currentCategory}, search: "${searchTerm}")`);
+  console.log(`🔍 Filtered: ${filteredProducts.length} products (category: ${currentCategory})`);
   return filteredProducts;
 }
 
@@ -74,10 +74,7 @@ function displayProducts() {
   const grid = document.getElementById('products-grid');
   const filteredProducts = filterProducts();
   
-  if (!grid) {
-    console.error('❌ products-grid element not found!');
-    return;
-  }
+  if (!grid) return;
   
   if (filteredProducts.length === 0) {
     grid.innerHTML = `
@@ -93,7 +90,7 @@ function displayProducts() {
   grid.innerHTML = filteredProducts.map(product => {
     const price = parseFloat(product.price || 0).toFixed(2);
     
-    // Logic to handle image vs emoji
+    // Image Handling Logic
     const isFilePath = product.image && (product.image.includes('/') || product.image.includes('.'));
     let imageHTML;
     if (isFilePath) {
@@ -102,9 +99,8 @@ function displayProducts() {
         imageHTML = product.image || '🍩';
     }
     
-    // Only use gradient background if it's NOT a real image
+    // Background Logic
     const bgStyle = isFilePath ? '' : `style="background: linear-gradient(135deg, #f4a460, #e08040);"`;
-
     const badge = product.badge ? `<span class="product-badge ${(product.badge || '').toLowerCase()}">${product.badge}</span>` : '';
     
     return `
@@ -125,8 +121,6 @@ function displayProducts() {
       </div>
     `;
   }).join('');
-  
-  console.log('✅ Displayed', filteredProducts.length, 'products');
 }
 
 // ==========================================
@@ -135,30 +129,20 @@ function displayProducts() {
 function setupFilters() {
   const filterButtons = document.querySelectorAll('.filter-btn');
   
-  if (filterButtons.length === 0) {
-    console.warn('⚠️ No filter buttons found!');
-    return;
-  }
+  if (filterButtons.length === 0) return;
   
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
-      // Remove active from all
+      // Remove active class from all
       filterButtons.forEach(btn => btn.classList.remove('active'));
-      
-      // Add active to clicked
+      // Add active class to clicked
       button.classList.add('active');
       
-      // Update category
+      // Update state and refresh
       currentCategory = button.getAttribute('data-category') || 'all';
-      
-      // Display filtered products
       displayProducts();
-      
-      console.log('🔘 Filter changed to:', currentCategory);
     });
   });
-  
-  console.log('✅ Filter buttons setup:', filterButtons.length);
 }
 
 // ==========================================
@@ -167,30 +151,17 @@ function setupFilters() {
 function setupSearch() {
   const searchInput = document.getElementById('search-input');
   
-  if (!searchInput) {
-    console.warn('⚠️ Search input not found!');
-    return;
-  }
+  if (!searchInput) return;
   
   // Real-time search
   searchInput.addEventListener('input', (e) => {
     searchTerm = e.target.value.trim();
     displayProducts();
   });
-  
-  // Also support Enter key
-  searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      searchTerm = e.target.value.trim();
-      displayProducts();
-    }
-  });
-  
-  console.log('✅ Search setup complete');
 }
 
 // ==========================================
-// CHECK URL PARAMETERS (for category links)
+// CHECK URL PARAMETERS (for homepage links)
 // ==========================================
 function checkURLParams() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -199,7 +170,7 @@ function checkURLParams() {
   if (category) {
     currentCategory = category.toLowerCase();
     
-    // Update active filter button
+    // Update UI button state
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(btn => {
       btn.classList.remove('active');
@@ -207,8 +178,6 @@ function checkURLParams() {
         btn.classList.add('active');
       }
     });
-    
-    console.log('🔗 URL category:', currentCategory);
   }
 }
 
@@ -217,20 +186,13 @@ function checkURLParams() {
 // ==========================================
 window.quickAddToCart = function(productId) {
   const product = allProducts.find(p => p.id === productId);
-  if (!product) {
-    console.error('❌ Product not found:', productId);
-    return;
-  }
+  if (!product) return;
   
-  // Get cart from localStorage
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  
-  // Check if product already in cart
   const existingItem = cart.find(item => item.id === productId);
   
   if (existingItem) {
     existingItem.quantity += 1;
-    console.log('📦 Updated quantity for:', product.name);
   } else {
     cart.push({
       id: product.id,
@@ -240,21 +202,15 @@ window.quickAddToCart = function(productId) {
       image: product.image,
       quantity: 1
     });
-    console.log('➕ Added to cart:', product.name);
   }
   
-  // Save cart
   localStorage.setItem('cart', JSON.stringify(cart));
-  
-  // Update cart count
   updateCartCount();
-  
-  // Show notification
   showNotification(`${product.name} added to cart!`);
 };
 
 // ==========================================
-// UPDATE CART COUNT
+// HELPER FUNCTIONS
 // ==========================================
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -263,59 +219,30 @@ function updateCartCount() {
   cartCountElements.forEach(el => el.textContent = totalItems);
 }
 
-// ==========================================
-// SHOW NOTIFICATION
-// ==========================================
 function showNotification(message) {
   const notification = document.getElementById('notification');
   if (notification) {
     notification.textContent = message;
     notification.style.display = 'block';
-    
-    setTimeout(() => {
-      notification.style.display = 'none';
-    }, 2000);
+    setTimeout(() => { notification.style.display = 'none'; }, 2000);
   }
 }
 
-// ==========================================
-// OPEN PRODUCT MODAL
-// ==========================================
 window.openProductModal = function(productId) {
   const product = allProducts.find(p => p.id === productId);
-  if (!product) {
-    console.error('❌ Product not found for modal:', productId);
-    return;
-  }
-  
-  // Store product data for modal
+  if (!product) return;
   window.currentModalProduct = product;
-  
-  // Dispatch custom event for modal
   const event = new CustomEvent('openProductModal', { detail: product });
   window.dispatchEvent(event);
-  
-  console.log('🔍 Opening modal for:', product.name);
 };
 
 // ==========================================
-// INITIALIZE ON PAGE LOAD
+// INITIALIZE
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('🚀 Listing page initializing...');
-  
-  // Check URL params first
   checkURLParams();
-  
-  // Setup filters and search
   setupFilters();
   setupSearch();
-  
-  // Load products from Firebase
   loadProducts();
-  
-  // Update cart count
   updateCartCount();
-  
-  console.log('✅ Listing page ready!');
 });
