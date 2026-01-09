@@ -8,6 +8,123 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍩</text></svg>">
   
   <link rel="stylesheet" href="assets/styles/main.css">
+
+  <style>
+    /* =========================================
+       SPECIFIC STYLES FOR LOCATION SECTION
+       (Overrides main.css for 3 columns)
+       ========================================= */
+    
+    /* Make grid wider to fit 3 cards */
+    .locations-grid {
+      max-width: 1100px !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    /* Styles for the "Coming Soon" Ribbon */
+    .location-card {
+      position: relative;
+      overflow: hidden; /* Needed to clip the ribbon */
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .ribbon-wrapper {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 85px;
+      height: 85px;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .ribbon {
+      position: absolute;
+      top: 15px;
+      right: -25px;
+      width: 120px;
+      background: #e63946; /* Red color */
+      color: white;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 5px 0;
+      transform: rotate(45deg);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      text-transform: uppercase;
+    }
+
+    /* Modal Styles for Coming Soon Popup */
+    .cs-modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(3px);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .cs-modal-content {
+      background: white;
+      padding: 40px;
+      border-radius: 25px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      position: relative;
+      animation: slideUp 0.3s ease;
+    }
+
+    .cs-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .cs-btn {
+      background: linear-gradient(135deg, #f4a460, #e08040);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 25px;
+      transition: transform 0.2s;
+    }
+
+    .cs-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* Mobile Responsive: Stack columns */
+    @media (max-width: 900px) {
+      .locations-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+    @media (max-width: 600px) {
+      .locations-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -196,22 +313,42 @@
   <section class="locations" id="locations">
     <div class="section-header">
       <h2>Visit <span>Us</span></h2>
-      <p>Find us at these convenient locations in Kuching</p>
+      <p>Find us at these convenient locations</p>
     </div>
     <div class="locations-grid">
-      <a href="https://www.google.com/maps/search/?api=1&query=Taman+Uni+Central+Kota+Samarahan" target="_blank" class="location-card" style="text-decoration: none; color: inherit; display: block;">
+      
+      <a href="https://www.google.com/maps/search/?api=1&query=Taman+Uni-Central+Kota+Samarahan" target="_blank" class="location-card">
         <div class="location-card-emoji">📍</div>
         <h3>Samarahan</h3>
         <p>Taman Uni-Central</p>
       </a>
 
-      <a href="https://www.google.com/maps/search/?api=1&query=Lukouhub+The+Greek+Donut+Shop+Rock+Road" target="_blank" class="location-card" style="text-decoration: none; color: inherit; display: block;">
+      <a href="https://www.google.com/maps/search/?api=1&query=Lukouhub+Rock+Road+Kuching" target="_blank" class="location-card">
         <div class="location-card-emoji">📍</div>
         <h3>Kuching</h3>
         <p>Rock Road</p>
       </a>
+
+      <div class="location-card" onclick="openComingSoonModal()">
+        <div class="ribbon-wrapper">
+          <div class="ribbon">Coming Soon!</div>
+        </div>
+        <div class="location-card-emoji">🏗️</div>
+        <h3>Samarahan</h3>
+        <p>Summer Mall</p>
+      </div>
+
     </div>
   </section>
+
+  <div id="comingSoonModal" class="cs-modal">
+    <div class="cs-modal-content">
+      <span class="cs-icon">👨‍🍳</span>
+      <h2 style="color: #2c1810; margin-bottom: 10px;">Baking in Progress!</h2>
+      <p style="color: #666; font-size: 16px;">We're still baking donuts for this location.<br>Check back soon!</p>
+      <button class="cs-btn" onclick="closeComingSoonModal()">Yum, can't wait!</button>
+    </div>
+  </div>
 
   <footer class="footer">
     <div class="footer-container">
@@ -257,6 +394,24 @@
   </footer>
 
   <script src="assets/scripts/main.js"></script>
+  
+  <script>
+    function openComingSoonModal() {
+      document.getElementById('comingSoonModal').style.display = 'flex';
+    }
+
+    function closeComingSoonModal() {
+      document.getElementById('comingSoonModal').style.display = 'none';
+    }
+
+    // Close when clicking outside the box
+    window.onclick = function(event) {
+      const modal = document.getElementById('comingSoonModal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
 
 </body>
 </html>
