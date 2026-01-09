@@ -261,14 +261,16 @@ window.quickAddToCart = function(productId) {
   localStorage.setItem('cart', JSON.stringify(cart));
   
   // Update cart count
-  updateCartCount();
+  if (typeof window.updateCartCount === 'function') {
+    window.updateCartCount(); 
+  }
   
   // Show notification
   if (typeof window.showNotification === 'function') {
-    window.showNotification(`${product.name} added to cart!`, 'success');
+    window.showNotification(`${product.name} added to cart!`);
   } else {
     // Fallback if main.js hasn't finished loading
-    alert(`${product.name} added to cart!`);
+    console.warn("⚠️ showNotification is not defined globally.");
 }
 };
 
