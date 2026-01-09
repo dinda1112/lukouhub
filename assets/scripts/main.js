@@ -4,6 +4,7 @@
 
 // ============ SHARED FUNCTIONS ============
 
+// Update cart count from localStorage (used on all pages)
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -13,44 +14,9 @@ function updateCartCount() {
   }
 }
 
-// ============ THEME TOGGLE FUNCTIONALITY ============
-
-function initializeTheme() {
-  const themeToggle = document.getElementById('theme-toggle');
-  
-  // 1. Check LocalStorage for saved theme
-  const savedTheme = localStorage.getItem('theme');
-  
-  // 2. Apply theme if it exists
-  if (savedTheme === 'dark') {
-    document.body.setAttribute('data-theme', 'dark');
-    if (themeToggle) themeToggle.textContent = '☀️'; // Sun icon for dark mode
-  } else {
-    if (themeToggle) themeToggle.textContent = '🌙'; // Moon icon for light mode
-  }
-
-  // 3. Add Click Event Listener
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = document.body.getAttribute('data-theme');
-      
-      if (currentTheme === 'dark') {
-        // Switch to Light
-        document.body.removeAttribute('data-theme');
-        localStorage.setItem('theme', 'light');
-        themeToggle.textContent = '🌙';
-      } else {
-        // Switch to Dark
-        document.body.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-        themeToggle.textContent = '☀️';
-      }
-    });
-  }
-}
-
 // ============ CART PAGE FUNCTIONS ============
 
+// Show notification
 function showNotification(message, type = 'success') {
   console.log("Notification triggered for:", message);
   const notification = document.getElementById('notification');
@@ -65,11 +31,13 @@ function showNotification(message, type = 'success') {
   }, 3000);
 }
 
+// Load and display cart
 function loadCart() {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const container = document.getElementById('cart-items-container');
   if (!container) return;
   
+  // Update item count
   const itemCountElement = document.getElementById('item-count');
   if (itemCountElement) {
     itemCountElement.textContent = cart.length;
@@ -90,16 +58,22 @@ function loadCart() {
     const checkoutBtn = document.getElementById('checkout-btn');
     if (checkoutBtn) checkoutBtn.disabled = false;
     
+    // --- THE FIX IS IN THIS MAP FUNCTION ---
     container.innerHTML = cart.map((item, index) => {
+      // 1. Check if the image string looks like a file path (contains / or .)
       const isFilePath = item.image && (item.image.includes('/') || item.image.includes('.'));
       
+      // 2. Determine HTML content: either an <img> tag or the emoji text
       let imageHTML;
       if (isFilePath) {
+          // It's a file path, create an image tag that fills the container
           imageHTML = `<img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover;">`;
       } else {
+          // It's an emoji or empty, display text
           imageHTML = item.image || '🍩';
       }
 
+      // 3. Determine background: Only add gradient background if it's NOT a real image file
       const backgroundStyle = isFilePath ? '' : `style="background: linear-gradient(135deg, ${getGradientColors(index)})"`;
 
       return `
@@ -121,34 +95,62 @@ function loadCart() {
         </div>
       </div>
     `}).join('');
+    // --- END OF FIX ---
   }
   
   updateSummary();
 }
 
+// Get gradient colors for variety (used only for emoji fallbacks now)
 function getGradientColors(index) {
   const gradients = [
-    '#8b4513, #d2691e', '#90ee90, #ffb6c1', '#deb887, #8b4513',
-    '#ff69b4, #ffb6c1', '#87ceeb, #4169e1', '#ffd700, #ffed4e'
+    '#8b4513, #d2691e',
+    '#90ee90, #ffb6c1',
+    '#deb887, #8b4513',
+    '#ff69b4, #ffb6c1',
+    '#87ceeb, #4169e1',
+    '#ffd700, #ffed4e'
   ];
   return gradients[index % gradients.length];
 }
 
+// Update quantity (ADD/REMOVE items)
 function updateQuantity(index, change) {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  
   if (!cart[index]) return;
+  
   cart[index].quantity += change;
-  if (cart[index].quantity < 1) { cart[index].quantity = 1; showNotification('Minimum quantity is 1', 'error'); return; }
-  if (cart[index].quantity > 99) { cart[index].quantity = 99; showNotification('Maximum quantity is 99', 'error'); return; }
+  
+  // Don't allow quantity to go below 1
+  if (cart[index].quantity < 1) {
+    cart[index].quantity = 1;
+    showNotification('Minimum quantity is 1', 'error');
+    return;
+  }
+  
+  // Max quantity limit
+  if (cart[index].quantity > 99) {
+    cart[index].quantity = 99;
+    showNotification('Maximum quantity is 99', 'error');
+    return;
+  }
+  
   localStorage.setItem('cart', JSON.stringify(cart));
   loadCart();
-  if (change > 0) showNotification(`Added 1 more ${cart[index].name}`, 'success');
-  else showNotification(`Removed 1 ${cart[index].name}`, 'success');
+  
+  if (change > 0) {
+    showNotification(`Added 1 more ${cart[index].name}`, 'success');
+  } else {
+    showNotification(`Removed 1 ${cart[index].name}`, 'success');
+  }
 }
 
+// Remove item from cart
 function removeItem(index) {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const itemName = cart[index]?.name || 'item';
+  
   if (confirm(`Remove ${itemName} from cart?`)) {
     cart.splice(index, 1);
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -157,9 +159,15 @@ function removeItem(index) {
   }
 }
 
+// Clear entire cart
 function clearCart() {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-  if (cart.length === 0) { showNotification('Cart is already empty', 'error'); return; }
+  
+  if (cart.length === 0) {
+    showNotification('Cart is already empty', 'error');
+    return;
+  }
+  
   if (confirm('Clear all items from cart? This cannot be undone.')) {
     localStorage.setItem('cart', '[]');
     localStorage.removeItem('discount');
@@ -173,6 +181,7 @@ function clearCart() {
   }
 }
 
+// Update order summary
 function updateSummary() {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -189,16 +198,30 @@ function updateSummary() {
   if (deliveryElement) deliveryElement.textContent = `RM ${delivery.toFixed(2)}`;
   if (discountElement) discountElement.textContent = `- RM ${discount.toFixed(2)}`;
   if (totalElement) totalElement.textContent = `RM ${total.toFixed(2)}`;
+
+  // Update cart count in navbar
   updateCartCount();
 }
 
+// Apply promo code
 function applyPromo() {
   const promoInput = document.getElementById('promo-input');
   if (!promoInput) return;
-  const code = promoInput.value.trim().toUpperCase();
-  if (!code) { showNotification('Please enter a promo code', 'error'); return; }
   
-  const promoCodes = { 'LUKOU10': 10, 'WELCOME': 5, 'FIRSTORDER': 15, 'NEWUSER': 8, 'SAVE20': 20 };
+  const code = promoInput.value.trim().toUpperCase();
+  
+  if (!code) {
+    showNotification('Please enter a promo code', 'error');
+    return;
+  }
+  
+  const promoCodes = {
+    'LUKOU10': 10,
+    'WELCOME': 5,
+    'FIRSTORDER': 15,
+    'NEWUSER': 8,
+    'SAVE20': 20
+  };
 
   if (promoCodes[code]) {
     const discount = promoCodes[code];
@@ -209,7 +232,7 @@ function applyPromo() {
     showNotification(`✓ Promo code applied! You saved RM ${discount.toFixed(2)}`, 'success');
     updateSummary();
   } else {
-    showNotification('Invalid promo code.', 'error');
+    showNotification('Invalid promo code. Try: LUKOU10, WELCOME, or FIRSTORDER', 'error');
     const promoSuccess = document.getElementById('promo-success');
     if (promoSuccess) promoSuccess.style.display = 'none';
     localStorage.removeItem('discount');
@@ -218,16 +241,27 @@ function applyPromo() {
   }
 }
 
+// Proceed to checkout
 function proceedToCheckout() {
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-  if (cart.length === 0) { showNotification('Cart is empty!', 'error'); return; }
+  
+  if (cart.length === 0) {
+    showNotification('Your cart is empty! Add items first.', 'error');
+    return;
+  }
+  
+  // Save cart state before checkout
   localStorage.setItem('checkoutCart', JSON.stringify(cart));
+  
+  // Redirect to checkout
   window.location.href = 'checkout.html';
 }
 
+// Check for applied promo code on load
 function checkPromoCode() {
   const discount = localStorage.getItem('discount');
   const promoCode = localStorage.getItem('promoCode');
+  
   if (discount && promoCode) {
     const promoInput = document.getElementById('promo-input');
     const promoSuccess = document.getElementById('promo-success');
@@ -236,9 +270,13 @@ function checkPromoCode() {
   }
 }
 
+// ============ LISTING PAGE FUNCTIONS ============
+
+// Simple filter functionality
 function initializeFilters() {
   const filterButtons = document.querySelectorAll('.filter-btn');
   if (filterButtons.length === 0) return;
+  
   filterButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       filterButtons.forEach(b => b.classList.remove('active'));
@@ -248,19 +286,30 @@ function initializeFilters() {
 }
 
 // ============ PAGE INITIALIZATION ============
+
+// Detect which page we're on and initialize accordingly
 document.addEventListener('DOMContentLoaded', function() {
+  // Update cart count on all pages
   updateCartCount();
-  initializeTheme(); // <--- This line is key!
   
+  // Check if we're on the cart page
   if (document.getElementById('cart-items-container')) {
     loadCart();
     checkPromoCode();
+    
+    // Add Enter key listener for promo code
     const promoInput = document.getElementById('promo-input');
     if (promoInput) {
       promoInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') applyPromo();
+        if (e.key === 'Enter') {
+          applyPromo();
+        }
       });
     }
   }
-  if (document.querySelector('.filter-btn')) initializeFilters();
+  
+  // Check if we're on the listing page
+  if (document.querySelector('.filter-btn')) {
+    initializeFilters();
+  }
 });
