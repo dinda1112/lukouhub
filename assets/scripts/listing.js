@@ -1,8 +1,8 @@
 // ==========================================
-// LISTING PAGE - FILTER & SEARCH (FIXED IMPORTS)
+// LISTING PAGE - FILTER & SEARCH
 // ==========================================
 
-// FIX: Import EVERYTHING from the local config to ensure versions match
+// FIX: Import EVERYTHING from local config to match versions
 import { db, collection, getDocs } from './firebase-config.js';
 
 let allProducts = [];
