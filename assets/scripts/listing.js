@@ -240,7 +240,7 @@ window.quickAddToCart = function(productId) {
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
   
   // Check if product already exists
-  const existingItem = cart.find(item => item.id === productId);
+  const existingItem = cart.find(item => item.id == productId);
   
   if (existingItem) {
     existingItem.quantity += 1;
