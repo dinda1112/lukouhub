@@ -18,6 +18,7 @@ function updateCartCount() {
 
 // Show notification
 function showNotification(message, type = 'success') {
+  console.log("Notification triggered for:", message);
   const notification = document.getElementById('notification');
   if (!notification) return;
   
